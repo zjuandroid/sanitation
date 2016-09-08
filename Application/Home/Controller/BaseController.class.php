@@ -9,6 +9,9 @@ use Think\Controller;
 class BaseController extends Controller {
     public function _initialize()
     {
+        if(!IS_POST){
+            exit(wrapResult('CM0001'));
+        }
     }
 
 }

@@ -14,7 +14,9 @@ plate VARCHAR(10) NOT NULL,
 company_id int(4),
 service_district tinyint,
 driver_id int(8),
-car_type tinyint,
+car_type tinyint DEFAULT 1 COMMENT '1:普通车',
+car_online tinyint(1),
+car_state int,
 cur_long DOUBLE(10,6),
 cur_lat DOUBLE(10,6),
 cur_report_time int,
@@ -27,11 +29,12 @@ cur_oil_consumption DOUBLE ,
 week_ave_oil_consumption DOUBLE
 )engine=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO san_car(plate, company_id, cur_long, cur_lat, cur_velocity, cur_oil_amount, cur_report_time, update_time)
+INSERT INTO san_car(plate, company_id, car_online, car_state, cur_long, cur_lat, cur_velocity, cur_oil_amount, cur_report_time, update_time)
 VALUES
-('沪A13871', 1, 121.641357,31.209006, 70, 55.5, 1466418002, 1466418002),
-('沪A13872', 1, 121.639273,31.208512, 70, 55.5, 1466418002, 1466418002),
-('沪A13873', 2, 121.63992,31.201933, 70, 30.5, 1466418002, 1466418002);
+('沪A13871', 1, 1, 0, 121.641357,31.209006, 70, 55.5, 1466418002, 1466418002),
+('沪A13872', 1, 1, 0, 121.639273,31.208512, 70, 55.5, 1466418002, 1466418002),
+('沪A13873', 2, 0, 0, 121.63992,31.201933, 70, 30.5, 1466418002, 1466418002),
+('沪A13874', 1, 0, 0, 121.63992,31.202933, 70, 30.5, 1466418002, 1466418002);
 
 
 drop TABLE if EXISTS san_company;
@@ -96,4 +99,5 @@ msg varchar(40) NOT NULL
 
 INSERT INTO san_errcode (code, msg)
 VALUES
-	('CM0000','操作成功');
+	('CM0000','操作成功'),
+	('CM0001','HTTP请求方式错误');
