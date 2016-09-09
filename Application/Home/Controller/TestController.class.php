@@ -40,10 +40,22 @@ class TestController extends Controller{
 //        $url = 'http://localhost/sanitation/index.php/home/company/getCars';
         $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcars';
 
+        $post_data['companyId'] = '1';
+        $post_data['plate'] = '8';
+
+        $post_data['appid'] = '3';
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getCarInfo() {
+//        $url = 'http://localhost/sanitation/index.php/home/company/getcarinfo';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcarinfo';
+
 //        $post_data['companyId'] = '3';
 //        $post_data['plate'] = '72';
 
-        $post_data['appid'] = '3';
+        $post_data['carList'] = '';
         $res = request_post($url, $post_data);
         print_r($res);
     }

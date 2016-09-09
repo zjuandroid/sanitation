@@ -50,6 +50,7 @@ function addChild(&$company, $car) {
     $child['type'] = $car['car_type'];
     $child['online'] = $car['car_online'];
     $child['state'] = $car['car_state'];
+//    $child['property'] = 'car';
     $company['children'][] = $child;
 }
 
