@@ -37,8 +37,8 @@ class TestController extends Controller{
     }
 
     public function getCars() {
-//        $url = 'http://localhost/sanitation/index.php/home/company/getCars';
-        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcars';
+        $url = 'http://localhost/sanitation/index.php/home/company/getCars';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcars';
 
         $post_data['companyId'] = '1';
         $post_data['plate'] = '8';
@@ -49,13 +49,70 @@ class TestController extends Controller{
     }
 
     public function getCarInfo() {
-//        $url = 'http://localhost/sanitation/index.php/home/company/getcarinfo';
-        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcarinfo';
+        $url = 'http://localhost/sanitation/index.php/home/company/getcarinfo';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcarinfo';
 
-//        $post_data['companyId'] = '3';
+        $post_data['companyId'] = '1';
 //        $post_data['plate'] = '72';
 
-        $post_data['carList'] = '';
+        $post_data['carList'] = '1';
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getPersons() {
+        $url = 'http://localhost/sanitation/index.php/home/person/getPersons';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcars';
+
+//        $post_data['companyId'] = '1';
+//        $post_data['plate'] = '8';
+
+        $post_data['appid'] = '3';
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getPersonInfo() {
+        $url = 'http://localhost/sanitation/index.php/home/person/getPersonInfo';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+
+        $post_data['personList'] = '1,2';
+//        $post_data['plate'] = '72';
+
+        $post_data['carList'] = '1';
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getDistricts() {
+        $url = 'http://localhost/sanitation/index.php/home/station/getDistricts';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+
+        $post_data['personList'] = '1,2';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getStations() {
+        $url = 'http://localhost/sanitation/index.php/home/station/getStations';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+
+        $post_data['districtId555'] = 1;
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getStationInfo() {
+        $url = 'http://localhost/sanitation/index.php/home/station/getStationInfo';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+
+        $post_data['stationList'] = '1,2';
+//        $post_data['plate'] = '72';
+
         $res = request_post($url, $post_data);
         print_r($res);
     }

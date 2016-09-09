@@ -31,8 +31,8 @@ class CompanyController extends BaseController
 //        dump($companyId);
 //        echo('plate');
 //        dump($plate);
-        Log::record(date("Y-m-d H:i:s").' companyid '.$companyId);
-        Log::record(date("Y-m-d H:i:s").' $plate '.$plate);
+        Log::record(date("Y-m-d H:i:s").' companyid---> '.$companyId);
+        Log::record(date("Y-m-d H:i:s").' plate---> '.$plate);
 
         if($companyId) {
             $condition['company_id'] = $companyId;
@@ -63,7 +63,7 @@ class CompanyController extends BaseController
 //                $child['state'] = $car['car_state'];
 //                $company['children'][] = $child;
 //                array_push($company['children'], $child);
-                addChild($company, $car);
+                addCarChild($company, $car);
 
                 $company_list[] = $company;
 
@@ -78,7 +78,7 @@ class CompanyController extends BaseController
 //                $child['online'] = $car['car_online'];
 //                $child['state'] = $car['car_state'];
 //                array_push($company_list[count($company_list)-1]['children'], $child);
-                addChild($company_list[count($company_list)-1], $car);
+                addCarChild($company_list[count($company_list)-1], $car);
             }
         }
 
@@ -97,7 +97,7 @@ class CompanyController extends BaseController
         $data = $dao->where('t1.id in ('.$carList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.plate, t1.car_type, t1.car_online, t1.car_state, t1.cur_long, t1.cur_lat, t1.cur_velocity, t1.cur_oil_amount, t1.update_time, t1.company_id, t2.company_name, t1.video_url')->select();
         $i = 0;
         foreach($data as $car) {
-            $car['location'] = $this->getAddress($car['cur_long'], $car['cur_lat']);
+            $car['location'] = getAddress($car['cur_long'], $car['cur_lat']);
 //            $car['video_url'] = 'http://115.159.66.204/uploads/video/carMonitor.flv';
             $car['video_url'] = C('VIDEO_ROOT').$car['video_url'];
             $car['car_state'] = $this->getCarStateDes(intval($car['car_state']));
@@ -122,20 +122,4 @@ class CompanyController extends BaseController
 
         return $des;
     }
-
-    private function getAddress($long, $lat) {
-        $postData['output'] = 'json';
-        $postData['ak'] = C('BAIDU_MAP_KEY');
-        $postData['location'] = $lat.','.$long;
-
-        $res = request_post(C('ADDR_REQ_URL'), $postData);
-
-        $obj = json_decode($res);
-        if($obj->status != 0) {
-            return '无法获取准确地址';
-        }
-
-        return $obj->result->formatted_address;
-    }
-
 }

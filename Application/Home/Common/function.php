@@ -44,7 +44,7 @@ function request_post($url = '', $post_data = '') {
     return $data;
 }
 
-function addChild(&$company, $car) {
+function addCarChild(&$company, $car) {
     $child['id'] = $car['id'];
     $child['plate'] = $car['plate'];
     $child['type'] = $car['car_type'];
@@ -54,6 +54,41 @@ function addChild(&$company, $car) {
     $company['children'][] = $child;
 }
 
+function addPersonChild(&$company, $person) {
+    $child['id'] = $person['id'];
+    $child['name'] = $person['name'];
+    $child['employee_no'] = $person['employee_no'];
+    $child['online'] = $person['online'];
+    $child['state'] = $person['state'];
+//    $child['property'] = 'car';
+    $company['children'][] = $child;
+}
+
+function addStationChild(&$district, $station) {
+    $child['id'] = $station['id'];
+    $child['name'] = $station['name'];
+    $child['station_no'] = $station['station_no'];
+    $child['online'] = $station['online'];
+    $child['state'] = $station['state'];
+//    $child['property'] = 'car';
+    $district['children'][] = $child;
+}
+
 function p ($array) {
     dump($array, 1, '<pre>', 0);
+}
+
+function getAddress($long, $lat) {
+    $postData['output'] = 'json';
+    $postData['ak'] = C('BAIDU_MAP_KEY');
+    $postData['location'] = $lat.','.$long;
+
+    $res = request_post(C('ADDR_REQ_URL'), $postData);
+
+    $obj = json_decode($res);
+    if($obj->status != 0) {
+        return '无法获取准确地址';
+    }
+
+    return $obj->result->formatted_address;
 }
