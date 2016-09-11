@@ -15,7 +15,8 @@ class StationController extends BaseController
         $managerId =  I('post.userId');
 
         $dao = M('district');
-        $data = $dao->field('id, name')->select();
+        $condition['pid'] = 0;
+        $data = $dao->field('id, name')->where($condition)->select();
 
         $ret['district_list'] = $data;
 

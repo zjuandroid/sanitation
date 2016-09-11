@@ -93,17 +93,23 @@ VALUES
 
 DROP TABLE if EXISTS san_district;
 CREATE TABLE san_district(
-id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR (20)
+id int(4) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR (20),
+pid int(11)
 )engine=InnoDB DEFAULT CHARSET = utf8;
 
-INSERT INTO san_district(name)
+INSERT INTO san_district(id, name, pid)
 VALUES
-('浦东新区'),
-('普陀区'),
-('宝山区'),
-('静安区'),
-('徐汇区');
+(1, '浦东新区', 0),
+(2,'普陀区', 0),
+(3,'宝山区', 0),
+(4,'静安区', 0),
+(5,'徐汇区', 0),
+(6, '张江镇', 1),
+(7,' 川沙镇', 1),
+(8,'幸福街道', 2),
+(9,'平安街道', 3),
+(10,'陆家嘴街道', 1);
 
 DROP TABLE if EXISTS san_waste_station;
 CREATE TABLE san_waste_station(
@@ -124,6 +130,26 @@ VALUES
 ('00001', '三林垃圾中转站', 1, 1, '浦东新区杨高南路34号', 1, 0, 1466418002, 'carMonitor.flv'),
 ('00002', '徐汇垃圾中转站', 2, 5, '徐汇区桂林路111号', 0, 0, 1466418002, 'carMonitor.flv'),
 ('00003', '唐镇垃圾中转站', 3, 1, '浦东新区顾唐路33号', 1, 0, 1466418002, 'carMonitor.flv');
+
+DROP TABLE if EXISTS san_collect_point;
+CREATE TABLE san_collect_point(
+id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+point_no VARCHAR (10) NOT NULL,
+name VARCHAR (40),
+company_id int(4),
+district_id int(4),
+address VARCHAR (100),
+online tinyint(1),
+state int,
+update_time int
+)engine=InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO san_collect_point(point_no, name, address, online, state, update_time, company_id, district_id)
+VALUES
+('00001', '1号回收点', '盛夏路31号', 1, 0, 1466418002, 1, 1),
+('00002', '2号回收点', '盛夏路32号', 1, 0, 1466418002, 1, 1),
+('00003', '3号回收点', 'XX路33号', 0, 1, 1466418002, 2, 2);
+
 
 DROP TABLE if EXISTS san_manager;
 CREATE TABLE san_manager(

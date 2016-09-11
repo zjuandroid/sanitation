@@ -117,6 +117,17 @@ class TestController extends Controller{
         print_r($res);
     }
 
+    public function getStreets() {
+        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getStreets';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+
+        $post_data['stationList'] = '1,2';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);
