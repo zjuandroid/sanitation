@@ -160,7 +160,7 @@ phone VARCHAR (11),
 service_district tinyint  #100为市级权限
 )engine=InnoDB DEFAULT CHARSET = utf8;
 
-insert into SAN_MANAGER (manager_name, service_district) values ('王局长', 100);
+insert into san_manager (manager_name, service_district) values ('王局长', 100);
 
 
 DROP TABLE IF EXISTS errcode;

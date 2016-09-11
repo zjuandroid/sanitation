@@ -128,6 +128,17 @@ class TestController extends Controller{
         print_r($res);
     }
 
+    public function getCollectPoints() {
+        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getCollectPoints';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+
+        $post_data['districtId'] = '10';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);
