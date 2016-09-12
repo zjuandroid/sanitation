@@ -150,6 +150,25 @@ VALUES
 ('00002', '2号回收点', '盛夏路32号', 1, 0, 1466418002, 1, 1),
 ('00003', '3号回收点', 'XX路33号', 0, 1, 1466418002, 2, 2);
 
+DROP TABLE if EXISTS san_dustbin;
+CREATE TABLE san_dustbin(
+id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+dustbin_no VARCHAR (10) NOT NULL,
+name VARCHAR (40),
+collect_point_id int(11) NOT NULL,
+cur_long DOUBLE (10,6),
+cur_lat DOUBLE (10, 6),
+online tinyint(1),
+state int,
+update_time int
+)engine=InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO san_dustbin(dustbin_no, collect_point_id, cur_long, cur_lat, online, state, update_time)
+VALUES
+('00001', 1, 121.650071,31.212481, 0, 0, 1466418002),
+('00002', 1, 121.650071,31.211481, 1, 0, 1466418002),
+('00003', 2, 121.650071,31.211481, 1, 0, 1466418002);
+
 
 DROP TABLE if EXISTS san_manager;
 CREATE TABLE san_manager(

@@ -198,24 +198,25 @@ class DustbinController extends BaseController
         return -1;
     }
 
-    public function getStationInfo() {
-        $stationList = I('post.stationList');
+    public function getDustbinInfo() {
+        $collectPointList = I('post.collectPointList');
 
-        if(empty($stationList)) {
+        if(empty($collectPointList)) {
             exit (wrapResult('CM0000'));
         }
 
-        $dao = M('waste_station');
-        $data = $dao->where('t1.id in ('.$stationList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.station_no, t1.name, t1.address, t1.online, t1.state, t1.update_time, t1.company_id, t2.company_name')->select();
+        $dao = M('dustbin');
+//        $data = $dao->alias('t1')->join('left join san_collect_point t2 ON t1.collect_point_id=t2.id')->join('left join san_company t3 ON t2.company_id=t3.id')->field('t1.id, t1.dustbin_no, t1.state, t1.online, t1.update_time, t2.id as point_id, t2.point_no, t3.company_name')->where('point_id in ('.$collectPointList.')')->select();
+        $data = $dao->alias('t1')->join('left join san_collect_point t2 ON t1.collect_point_id=t2.id')->join('left join san_company t3 ON t2.company_id=t3.id')->field('t1.id, t1.dustbin_no, t1.state, t1.online, t1.cur_long, t1.cur_lat, t1.update_time, t2.id as point_id, t2.point_no, t3.company_name')->where('t2.id in ('.$collectPointList.')')->order('t2.id')->select();
+
         $i = 0;
-        foreach($data as $station) {
-            $station['state'] = $this->getStateDes(intval($station['state']));
-            $station['video_url'] = C('VIDEO_ROOT').$station['video_url'];
-            $data[$i++] = $station;
+        foreach($data as $dustbin) {
+            $dustbin['state'] = $this->getStateDes(intval($dustbin['state']));
+            $dustbin['location'] = getAddress($dustbin['cur_long'], $dustbin['cur_lat']);
+            $data[$i++] = $dustbin;
         }
 
-//        p($this->getAddress(121.506126,31.245475));
-        $ret['station_list'] = $data;
+        $ret['dustbin_list'] = $data;
         echo (wrapResult('CM0000', $ret));
     }
 
@@ -225,7 +226,7 @@ class DustbinController extends BaseController
                 $des = '正常';
                 break;
             default:
-                $des = '未知';
+                $des = '已满';
                 break;
         }
 
