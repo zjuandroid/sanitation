@@ -10,7 +10,7 @@ namespace Home\Controller;
 use Think\Log;
 
 
-class CompanyController extends BaseController
+class CarController extends BaseController
 {
     public function getCompanies() {
         $managerId =  I('post.userId');
@@ -122,4 +122,6 @@ class CompanyController extends BaseController
 
         return $des;
     }
+
+
 }

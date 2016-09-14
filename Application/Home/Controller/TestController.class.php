@@ -129,10 +129,10 @@ class TestController extends Controller{
     }
 
     public function getCollectPoints() {
-        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getCollectPoints';
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+//        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getCollectPoints';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/Dustbin/getCollectPoints';
 
-        $post_data['districtId'] = '10';
+        $post_data['districtId555'] = '10';
 //        $post_data['plate'] = '72';
 
         $res = request_post($url, $post_data);

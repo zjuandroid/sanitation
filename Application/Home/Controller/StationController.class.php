@@ -37,7 +37,7 @@ class StationController extends BaseController
         $dao = M('waste_station');
 //        $data = $dao->join('san_company ON car.company_id = company.id')->field('car.id, car.plate, car.car_type, car.car_online, car.car_state, car.company_id, company.company_name')->order('car.company_id')->select();
 //        $data = $dao->alias('t1')->join('company t2', 't1.company_id=t2.id')->field('t1.id, t1.plate, t1.car_type, t1.car_online, t1.car_state, t1.company_id, t2.company_name')->select();
-        $data = $dao->where($condition)->alias('t1')->join('left join san_district t2 ON t1.district_id=t2.id')->field('t1.id, t1.name, t1.online, t1.state, t1.district_id, t2.name as district_name')->order('t1.district_id')->select();
+        $data = $dao->where($condition)->alias('t1')->join('left join san_district t2 ON t1.district_id=t2.id')->field('t1.id, t1.name, t1.online, t1.state, t1.district_id, t1.station_no, t2.name as district_name')->order('t1.district_id')->select();
 
         $lastDistrictId = -1;
         $district_list = array();
