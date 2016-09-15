@@ -123,5 +123,146 @@ class CarController extends BaseController
         return $des;
     }
 
+    public function getCarTrackSegments() {
+        $startTime = I('post.startTime');
+        $endTime = I('post.endTime');
+        $companyId = I('post.companyId');
+        $plate = I('post.plate');
+
+
+        if(empty($startTime) || empty($endTime) || $endTime-$startTime>C('MAX_TIME_SPAN')) {
+            exit(wrapResult('CM0002'));
+        }
+        else {
+            $condition['report_time'] = array('egt', $startTime);
+            $condition['report_time'] = array('elt', $endTime);
+        }
+
+        if($companyId) {
+            $condition['company_id'] = $companyId;
+        }
+        if($plate) {
+            $condition['plate'] = array('like', '%'.$plate.'%');
+        }
+
+        $dao = M('car_his_pos');
+        $data = $dao->where($condition)->alias('t1')->join('left join san_car t2 ON t1.car_id=t2.id')->join('left join san_company t3 ON t2.company_id=t3.id')->field('t1.id, t1.car_id, t1.report_time, t1.his_long, t1.his_lat, t2.plate, t2.company_id, t3.company_name')->order('t2.company_id, t1.car_id, t1.report_time')->select();
+
+//        dump($data);
+        $lastCompanyId = -100;
+        $lastCarId = -100;
+        $reportTime = -100;
+        $company_list = array();
+
+        foreach($data as $carPoint) {
+            $company = null;
+            $car = null;
+            $seg = null;
+//            dump($carPoint['company_id']);
+//            dump($lastCompanyId);
+            if($carPoint['company_id'] != $lastCompanyId) {
+//                dump('1----');
+                $seg['startTime'] = $carPoint['report_time'];
+                $seg['endTime'] = $carPoint['report_time'];
+
+                $car['id'] = $carPoint['car_id'];
+                $car['plate'] = $carPoint['plate'];
+                $car['children'][] = $seg;
+
+                $company['id'] = $carPoint['company_id'];
+                $company['name'] = $carPoint['company_name'];
+                $company['children'][] = $car;
+
+                $company_list[] = $company;
+
+                $lastCompanyId = $carPoint['company_id'];
+                $lastCarId = $carPoint['car_id'];
+                $reportTime = $carPoint['report_time'];
+            }
+            else if($carPoint['car_id'] != $lastCarId){
+//                dump('2------');
+                $seg['startTime'] = $carPoint['report_time'];
+                $seg['endTime'] = $carPoint['report_time'];
+
+                $car['id'] = $carPoint['car_id'];
+                $car['plate'] = $carPoint['plate'];
+                $car['children'][] = $seg;
+
+//                p($company_list);
+                $company_list[count($company_list)-1]['children'][] =  $car;
+//                p($company_list);
+
+                $lastCarId = $carPoint['car_id'];
+                $reportTime = $carPoint['report_time'];
+            }
+            else {
+                if($carPoint['report_time'] - $reportTime >= C('MAX_SEG_SPAN')) {
+//                    dump('3---------');
+                    $seg['startTime'] = $carPoint['report_time'];
+                    $seg['endTime'] = $carPoint['report_time'];
+
+                    $lastCarIndex = count( $company_list[count($company_list)-1]['children'])-1;
+                    $company_list[count($company_list)-1]['children'][$lastCarIndex]['children'][] = $seg;
+                }
+                else {
+//                    dump('4---------');
+                    $lastCompanyIndex = count($company_list)-1;
+                    $lastCarIndex = count( $company_list[$lastCompanyIndex]['children'])-1;
+                    $lastSegIndex = count($company_list[$lastCompanyIndex]['children'][$lastCarIndex]['children'])-1;
+                    $company_list[$lastCompanyIndex]['children'][$lastCarIndex]['children'][$lastSegIndex]['endTime'] = $carPoint['report_time'];
+                }
+
+                $reportTime = $carPoint['report_time'];
+            }
+
+//            p($company_list);
+        }
+
+        $ret['company_list'] = $company_list;
+        echo (wrapResult('CM0000', $ret));
+    }
+
+    public function getCarTrackPoints() {
+        $carIds = I('post.carIds');
+        $startTimes = I('post.startTimes');
+        $endTimes = I('post.endTimes');
+
+        if(empty($carIds) || empty($startTimes) || empty($endTimes)) {
+            exit(wrapResult('CM0003'));
+        }
+
+        $idList = explode(',', $carIds);
+        $startTimeList = explode(',', $startTimes);
+        $endTimeList = explode(',', $endTimes);
+
+//        dump($idList);
+
+        $dao = M('car_his_pos');
+        $carList = null;
+
+        for($i = 0; $i < count($idList); $i++) {
+            $condition['car_id'] = $idList[$i];
+            $condition['report_time'] = array('egt', $startTimeList[$i]);
+            $condition['report_time'] = array('elt', $endTimeList[$i]);
+
+            $seg['car_id'] = $idList[$i];
+            $seg['start_time'] = $startTimeList[$i];
+            $seg['end_time'] = $endTimeList[$i];
+            $seg['points'] = $dao->where($condition)->field('report_time, his_long, his_lat')->order('report_time')->select();
+
+            $carList[] = $seg;
+//            p($carList);
+        }
+
+//        $condition['car_id'] = $carId;
+//        $condition['report_time'] = array('egt', $startTime);
+//        $condition['report_time'] = array('elt', $endTime);
+//
+//        $dao = M('car_his_pos');
+
+        $ret['car_list'] = $carList;
+
+        echo (wrapResult('CM0000', $ret));
+    }
 
 }

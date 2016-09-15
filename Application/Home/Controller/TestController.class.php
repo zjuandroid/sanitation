@@ -150,6 +150,93 @@ class TestController extends Controller{
         print_r($res);
     }
 
+    public function getCarTrackSegments() {
+        $url = 'http://localhost/sanitation/index.php/home/Car/getCarTrackSegments';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+
+        $post_data['startTime'] = 1473082656;
+        $post_data['endTime'] = 1473092731;
+
+//        $post_data['endTime'] = 1473092706;
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getCarTrackPoints() {
+//        $url = 'http://localhost/sanitation/index.php/home/Car/getCarTrackPoints';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/Car/getCarTrackPoints';
+
+        $post_data['carIds'] = '1,2';
+        $post_data['startTimes'] = '1473082656,1473092706';
+        $post_data['endTimes'] = '1473082686,1473092731';
+
+//        $post_data['endTime'] = 1473092706;
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getPersonTrackSegments() {
+        $url = 'http://localhost/sanitation/index.php/home/person/getPersonTrackSegments';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+
+        $post_data['startTime'] = 1473082656;
+        $post_data['endTime'] = 1473092731;
+
+//        $post_data['endTime'] = 1473092706;
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getPersonTrackPoints() {
+        $url = 'http://localhost/sanitation/index.php/home/Person/getPersonTrackPoints';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/Car/getCarTrackPoints';
+
+        $post_data['personIds'] = '1,2,3';
+        $post_data['startTimes'] = '1473082656,1473092706,1473082656';
+        $post_data['endTimes'] = '1473082686,1473092731,1473092731';
+
+//        $post_data['endTime'] = 1473092706;
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+
+    public function getStationTrackSegments() {
+        $url = 'http://localhost/sanitation/index.php/home/station/getStationTrackSegments';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+
+        $post_data['startTime'] = 1473082656;
+        $post_data['endTime'] = 1473107656;
+
+//        $post_data['endTime'] = 1473092706;
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getStationTrackPoints() {
+        $url = 'http://localhost/sanitation/index.php/home/station/getStationTrackPoints';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+
+        $post_data['startTime'] = 1473082656;
+        $post_data['endTime'] = 1473107656;
+
+        $post_data['stationList'] = '1,2';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);

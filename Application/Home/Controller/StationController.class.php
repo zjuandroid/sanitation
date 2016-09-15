@@ -43,6 +43,7 @@ class StationController extends BaseController
         $district_list = array();
 
         foreach($data as $station) {
+            $district = null;
             if($station['district_id'] != $lastDistrictId) {
                 $district['id'] = $station['district_id'];
                 $district['name'] = $station['district_name'];
@@ -96,6 +97,134 @@ class StationController extends BaseController
         }
 
         return $des;
+    }
+
+    public function getStationTrackSegments() {
+        $districtId = I('post.districtId');
+        $name = I('post.name');
+        $startTime = I('post.startTime');
+        $endTime = I('post.endTime');
+
+        if(empty($startTime) || empty($endTime) || $endTime-$startTime>C('MAX_TIME_STATION_SPAN')) {
+            exit(wrapResult('CM0002'));
+        }
+
+        $hisDao = M('waste_station_his');
+        $where['report_time'] = array('egt', $startTime);
+        $where['report_time'] = array('elt', $endTime);
+        $data = $hisDao->where($where)->field('waste_station_id')->group('waste_station_id')->select();
+//        $data = $dao->where($where)->getField('waste_station_id')->group('waste_station_id');
+        $idList = null;
+        foreach($data as $item) {
+            $idList[] = $item['waste_station_id'];
+        }
+
+//        dump($idList);
+
+        if($idList)
+        {
+            $str = implode(',', $idList);
+            $condition['t1.id'] = array('in', $str);
+        }
+        else {
+            exit(wrapResult('CM0000'));
+        }
+
+        if($districtId) {
+            $condition['district_id'] = $districtId;
+        }
+        if($name) {
+            $condition['name'] = array('like', '%'.$name.'%');
+        }
+
+        $data = null;
+
+        $dao = M('waste_station');
+        $data = $dao->where($condition)->alias('t1')->join('left join san_district t2 ON t1.district_id=t2.id')->field('t1.id, t1.name, t1.station_no, t1.district_id,  t2.name as district_name')->order('t1.district_id')->select();
+
+        $lastDistrictId = -1;
+        $district_list = array();
+
+        foreach($data as $station) {
+            $district = null;
+            $child = null;
+            if($station['district_id'] != $lastDistrictId) {
+                $district['id'] = $station['district_id'];
+                $district['name'] = $station['district_name'];
+//                $company['property'] = 'company';
+//                $district['children'] = array();
+
+                $child['id'] = $station['id'];
+                $child['name'] = $station['name'];
+                $child['station_no'] = $station['station_no'];
+                $child['his_full_state'] = $this->getHisFullState($hisDao, $station['id'], $startTime, $endTime);
+                $child['start_time'] = $startTime;
+                $child['end_time'] = $endTime;
+
+                $district['children'][] = $child;
+                $district_list[] = $district;
+
+                $lastDistrictId = $station['district_id'];
+            }
+            else {
+                $child['id'] = $station['id'];
+                $child['name'] = $station['name'];
+                $child['station_no'] = $station['station_no'];
+                $child['his_full_state'] = $this->getHisFullState($hisDao, $station['id'], $startTime, $endTime);
+                $child['start_time'] = $startTime;
+                $child['end_time'] = $endTime;
+
+                $district_list[count($district_list)-1]['children'][] = $child;
+            }
+        }
+
+        $ret['district_list'] = $district_list;
+        echo (wrapResult('CM0000', $ret));
+    }
+
+    private function getHisFullState($dao, $id, $startTime, $endTime) {
+        $where['report_time'] = array('egt', $startTime);
+        $where['report_time'] = array('elt', $endTime);
+        $where['waste_station_id'] = $id;
+        $where['water_level'] = array('egt', C('MAX_WATER_LEVEL'));
+
+        $data = $dao->where($where)->select();
+        if(empty($data)) {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    public function getStationTrackPoints() {
+        $stationList = I('post.stationList');
+        $startTime = I('post.startTime');
+        $endTime = I('post.endTime');
+
+        if(empty($startTime) || empty($endTime) || $endTime-$startTime>C('MAX_TIME_STATION_SPAN')) {
+            exit(wrapResult('CM0002'));
+        }
+
+        if(empty($stationList)) {
+            exit (wrapResult('CM0000'));
+        }
+
+        $dao = M('waste_station');
+        $data = $dao->where('t1.id in ('.$stationList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.station_no, t1.name, t1.address, t1.company_id, t2.company_name')->select();
+        $hisDao = M('waste_station_his');
+        $i = 0;
+        foreach($data as $station) {
+            $condition = null;
+            $condition['waste_station_id'] = $station['id'];
+            $condition['report_time'] = array('egt', $startTime);
+            $condition['report_time'] = array('elt', $endTime);
+
+            $data[$i++]['point'] = $hisDao->where($condition)->field('report_time, water_level')->order('report_time')->select();
+        }
+
+//        p($this->getAddress(121.506126,31.245475));
+        $ret['station_list'] = $data;
+        echo (wrapResult('CM0000', $ret));
     }
 
 }
