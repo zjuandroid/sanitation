@@ -219,7 +219,7 @@ class StationController extends BaseController
             $condition['report_time'] = array('egt', $startTime);
             $condition['report_time'] = array('elt', $endTime);
 
-            $data[$i++]['point'] = $hisDao->where($condition)->field('report_time, water_level')->order('report_time')->select();
+            $data[$i++]['points'] = $hisDao->where($condition)->field('report_time, water_level')->order('report_time')->select();
         }
 
 //        p($this->getAddress(121.506126,31.245475));

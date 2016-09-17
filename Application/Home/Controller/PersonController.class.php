@@ -215,6 +215,7 @@ class PersonController extends BaseController
 
         $dao = M('person_his_pos');
         $personList = null;
+        $personInfo = M('employee')->field('id, name')->where('id in ('.$personIds.')')->select();
 
         for($i = 0; $i < count($idList); $i++) {
             $condition['person_id'] = $idList[$i];
@@ -222,6 +223,7 @@ class PersonController extends BaseController
             $condition['report_time'] = array('elt', $endTimeList[$i]);
 
             $seg['person_id'] = $idList[$i];
+            $seg['name'] = $this->getNameById($personInfo, $idList[$i]);
             $seg['start_time'] = $startTimeList[$i];
             $seg['end_time'] = $endTimeList[$i];
             $seg['points'] = $dao->where($condition)->field('report_time, his_long, his_lat')->order('report_time')->select();
@@ -239,6 +241,16 @@ class PersonController extends BaseController
         $ret['person_list'] = $personList;
 
         echo (wrapResult('CM0000', $ret));
+    }
+
+    private function getNameById($list, $id) {
+        foreach($list as $item) {
+            if($item['id'] == $id) {
+                return $item['name'];
+            }
+        }
+
+        return null;
     }
 
 }

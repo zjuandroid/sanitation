@@ -233,4 +233,140 @@ class DustbinController extends BaseController
         return $des;
     }
 
+    public function getCollectTrackSegments() {
+        $districtId = I('post.districtId');
+        $streetId = I('post.streetId');
+        $name = I('post.name');
+        $pointNo = I('post.pointNo');
+        $startTime = I('post.startTime');
+        $endTime = I('post.endTime');
+
+        if(empty($startTime) || empty($endTime) || $endTime-$startTime>C('MAX_TIME_STATION_SPAN')) {
+            exit(wrapResult('CM0002'));
+        }
+
+        $hisDao = M('collect_point_his');
+        $where['report_time'] = array('egt', $startTime);
+        $where['report_time'] = array('elt', $endTime);
+        $data = $hisDao->where($where)->field('collect_point_id')->group('collect_point_id')->select();
+        $idList = null;
+        foreach($data as $item) {
+            $idList[] = $item['collect_point_id'];
+        }
+
+        if($idList)
+        {
+            $str = implode(',', $idList);
+            $condition['t1.id'] = array('in', $str);
+        }
+        else {
+            exit(wrapResult('CM0000'));
+        }
+
+        if($streetId) {
+            $condition['district_id'] = $districtId;
+        }
+        else if($districtId) {
+            $streetList = M('district')->where('pid = '.$districtId)->field('id')->select();
+
+            $arr = array();
+            foreach($streetList as $street) {
+                $arr[] = $street['id'];
+            }
+            $str = implode(',', $arr);
+            rtrim($str, ',');
+
+            $condition['district_id'] = array('in', $str);
+        }
+        if($name) {
+            $condition['name'] = array('like', '%'.$name.'%');
+        }
+        if($pointNo) {
+            $condition['point_no'] = array('like', '%'.$pointNo.'%');
+        }
+
+        $dao = M('collect_point');
+        $data = $dao->where($condition)->alias('t1')->join('left join san_district t2 ON t1.district_id=t2.id')->field('t1.id, t1.name, t1.point_no, t1.online, t1.state, t1.district_id, t2.name as district_name, t2.pid')->order('t1.district_id')->select();
+        $districtNameTable = M('district')->field('id, name')->select();
+
+        $lastDistrictId = -100;
+        $district_list = null;
+
+//        dump($data);
+
+        foreach($data as $point) {
+            $street = null;
+            $district = null;
+            $collectPoint = null;
+            $districtIndex = $this->getDistrictIndex($district_list, $point['pid']);
+            $streetIndex = $this->getStreetIndex($district_list, $point['pid'], $point['district_id']);
+
+//            dump($point['pid']);
+//            dump($point['id']);
+//            dump($districtIndex);
+//            dump($streetIndex);
+
+            $collectPoint['id'] = $point['id'];
+            $collectPoint['name'] = $point['name'];
+            $collectPoint['point_no'] = $point['point_no'];
+
+            if($streetIndex != -1) {
+                $district_list[$districtIndex]['children'][$streetIndex]['children'][] = $collectPoint;
+            }
+            else if($districtIndex != -1) {
+                $street['id'] = $point['district_id'];
+                $street['name'] = $point['district_name'];
+                $street['children'][] = $collectPoint;
+
+                $district_list[$districtIndex]['children'][] = $street;
+            }
+            else {
+
+                $street['id'] = $point['district_id'];
+                $street['name'] = $point['district_name'];
+                $street['children'][] = $collectPoint;
+
+                $district['id'] = $point['pid'];
+                $district['name'] = $this->getDistrictName($districtNameTable, $district['id']);
+                $district['children'][] = $street;
+
+                $district_list[] = $district;
+            }
+//            p($district_list);
+        }
+
+        $ret['district_list'] = $district_list;
+        echo (wrapResult('CM0000', $ret));
+    }
+
+    public function getCollectTrackPoints() {
+        $collectList = I('post.collectList');
+        $startTime = I('post.startTime');
+        $endTime = I('post.endTime');
+
+        if(empty($startTime) || empty($endTime) || $endTime-$startTime>C('MAX_TIME_STATION_SPAN')) {
+            exit(wrapResult('CM0002'));
+        }
+
+        if(empty($collectList)) {
+            exit (wrapResult('CM0000'));
+        }
+
+        $dao = M('collect_point');
+        $data = $dao->where('t1.id in ('.$collectList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.point_no, t1.name, t1.address, t1.company_id, t2.company_name')->select();
+        $hisDao = M('collect_point_his');
+        $i = 0;
+        foreach($data as $point) {
+            $condition = null;
+            $condition['collect_point_id'] = $point['id'];
+            $condition['report_time'] = array('egt', $startTime);
+            $condition['report_time'] = array('elt', $endTime);
+
+            $data[$i++]['points'] = $hisDao->where($condition)->field('report_time, full_num')->order('report_time')->select();
+        }
+
+//        p($this->getAddress(121.506126,31.245475));
+        $ret['collect_point_list'] = $data;
+        echo (wrapResult('CM0000', $ret));
+    }
 }

@@ -239,13 +239,16 @@ class CarController extends BaseController
 
         $dao = M('car_his_pos');
         $carList = null;
+        $carInfo = M('car')->field('id, plate')->where('id in ('.$carIds.')')->select();
 
         for($i = 0; $i < count($idList); $i++) {
+            $seg = null;
             $condition['car_id'] = $idList[$i];
             $condition['report_time'] = array('egt', $startTimeList[$i]);
             $condition['report_time'] = array('elt', $endTimeList[$i]);
 
             $seg['car_id'] = $idList[$i];
+            $seg['plate'] = $this->getNameById($carInfo, $idList[$i]);
             $seg['start_time'] = $startTimeList[$i];
             $seg['end_time'] = $endTimeList[$i];
             $seg['points'] = $dao->where($condition)->field('report_time, his_long, his_lat')->order('report_time')->select();
@@ -263,6 +266,16 @@ class CarController extends BaseController
         $ret['car_list'] = $carList;
 
         echo (wrapResult('CM0000', $ret));
+    }
+
+    private function getNameById($list, $id) {
+        foreach($list as $item) {
+            if($item['id'] == $id) {
+                return $item['plate'];
+            }
+        }
+
+        return null;
     }
 
 }
