@@ -265,6 +265,19 @@ VALUES
 ('00002', 1, 121.650071,31.211481, 1, 0, 1466418002),
 ('00003', 2, 121.650071,31.211481, 1, 0, 1466418002);
 
+DROP TABLE if EXISTS san_alert;
+CREATE TABLE san_alert(
+id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+type tinyint(1),
+content VARCHAR (100),
+status tinyint(1) DEFAULT 0,
+report_time int
+)engine=InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO san_alert(type, content, status, report_time)
+VALUES
+(1, '沪A13872发生故障', 0, 1466418002),
+(2, '张三(编号00001)跌倒', 0, 1466419002);
 
 DROP TABLE if EXISTS san_manager;
 CREATE TABLE san_manager(
@@ -290,4 +303,6 @@ VALUES
 	('CM0000','操作成功'),
 	('CM0001','HTTP请求方式错误'),
 	('CM0002', '查询时间跨度不正确'),
-	('CM0003', '缺少必须参数');
+	('CM0003', '缺少必须参数'),
+	('CM0004', '参数错误'),
+	('CM0005', '数据库操作失败');
