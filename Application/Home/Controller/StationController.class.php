@@ -73,7 +73,7 @@ class StationController extends BaseController
         }
 
         $dao = M('waste_station');
-        $data = $dao->where('t1.id in ('.$stationList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.station_no, t1.name, t1.address, t1.online, t1.state, t1.update_time, t1.company_id, t2.company_name')->select();
+        $data = $dao->where('t1.id in ('.$stationList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.station_no, t1.name, t1.address, t1.online, t1.state, t1.update_time, t1.video_url, t1.company_id, t2.company_name')->select();
         $i = 0;
         foreach($data as $station) {
             $station['state'] = $this->getStateDes(intval($station['state']));
