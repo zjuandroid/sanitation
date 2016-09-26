@@ -268,16 +268,18 @@ VALUES
 DROP TABLE if EXISTS san_alert;
 CREATE TABLE san_alert(
 id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-type tinyint(1),
-content VARCHAR (100),
+device_type int,
+source_id int,
+content_type int,
+content_desc VARCHAR (100),
 status tinyint(1) DEFAULT 0,
 report_time int
 )engine=InnoDB DEFAULT CHARSET = utf8;
 
-INSERT INTO san_alert(type, content, status, report_time)
+INSERT INTO san_alert(device_type, source_id, content_type, content_desc, status, report_time)
 VALUES
-(1, '沪A13872发生故障', 0, 1466418002),
-(2, '张三(编号00001)跌倒', 0, 1466419002);
+(101, 1, 101, '沪A13872发生故障', 0, 1466418002),
+(201, 1, 201, '张三(编号00001)跌倒', 0, 1466419002);
 
 DROP TABLE if EXISTS san_manager;
 CREATE TABLE san_manager(

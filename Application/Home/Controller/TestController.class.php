@@ -293,6 +293,30 @@ class TestController extends Controller{
         print_r($res);
     }
 
+    public function getAlertDeviceType() {
+        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlertDeviceType';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+
+
+        $post_data['xxx'] = 'all';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getAlertType() {
+        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlertType';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+
+
+        $post_data['xxx'] = 'all';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     public function addNewAlert() {
 
         $alert['type'] = 1;
