@@ -9,4 +9,5 @@ return array(
     'MAX_SEG_SPAN' => 0.5*60*60,
     'MAX_TIME_STATION_SPAN' => 7*24*60*60,
     'MAX_WATER_LEVEL' => 2,
+    'MAX_REPORT_TIME_SPAN' => 30*24*60*60,
 );
