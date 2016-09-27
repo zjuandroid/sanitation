@@ -265,8 +265,8 @@ VALUES
 ('00002', 1, 121.650071,31.211481, 1, 0, 1466418002),
 ('00003', 2, 121.650071,31.211481, 1, 0, 1466418002);
 
-DROP TABLE if EXISTS san_alert;
-CREATE TABLE san_alert(
+DROP TABLE if EXISTS san_alert1;
+CREATE TABLE san_alert1(
 id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 device_type int,
 source_id int,
@@ -276,10 +276,33 @@ status tinyint(1) DEFAULT 0,
 report_time int
 )engine=InnoDB DEFAULT CHARSET = utf8;
 
-INSERT INTO san_alert(device_type, source_id, content_type, content_desc, status, report_time)
+INSERT INTO san_alert1(device_type, source_id, content_type, content_desc, status, report_time)
 VALUES
 (101, 1, 101, '沪A13872发生故障', 0, 1466418002),
 (201, 1, 201, '张三(编号00001)跌倒', 0, 1466419002);
+
+DROP TABLE if EXISTS san_alert;
+CREATE TABLE san_alert(
+id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+device_type int,
+source_id int,
+source_name VARCHAR (40),
+source_company_id int,
+source_company_name VARCHAR (40),
+source_district_id int,
+source_district_name VARCHAR (20),
+content_type int,
+content_desc VARCHAR (100),
+status tinyint(1) DEFAULT 0,
+report_time int
+)engine=InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO san_alert(device_type, source_id, source_name, source_company_id, source_company_name, source_district_id, source_district_name, content_type, content_desc, status, report_time)
+VALUES
+(101, 1, 'A13871', 1, '清洁公司1', NULL , NULL , 101, '骤降7', 0, 1474953967),
+(201, 3, '张三', 2, '清洁公司2', NULL , NULL , 201, '环卫人员跌倒', 0, 1474964967),
+(301, 2, '徐汇垃圾中转站', 2, '清洁公司2', 5 , '徐汇区' , 301, '中转站已满', 0, 1474973967),
+(401, 1, '1号回收点', 1, '清洁公司1', 1 , '浦东区' , 401, '回收点已满', 0, 1474983967);
 
 DROP TABLE if EXISTS san_manager;
 CREATE TABLE san_manager(

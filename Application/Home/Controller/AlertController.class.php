@@ -170,7 +170,7 @@ class AlertController extends BaseController
         echo (wrapResult('CM0000', $ret));
     }
 
-    public function getAlerts() {
+    public function getAlerts2() {
         $alertDeviceType = I('post.alertDeviceType');
         $alertType = I('post.alertType');
         $companyId = I('post.companyId');
@@ -213,15 +213,17 @@ class AlertController extends BaseController
 
             switch ($kind1) {
                 case 1:
+                    //车辆
                     if($companyId) {
                         $condition['company_id'] = $companyId;
                     }
                     if($name) {
                         $condition['plate'] = array('like', '%'.$name.'%');
                     }
-                    $data = M('alert')->where($condition)->alias('t1')->join('left join san_car t2 ON t1.source_id=t2.id')->field('t1.id, t1.device_type, t1.source_id, t1.content_type, t1.content_desc, t1.status, t1.report_time, t2.plate as name, t2.company_id, t2.car_type')->select();
+                    $data = M('alert')->where($condition)->alias('t1')->join('left join san_car t2 ON t1.source_id=t2.id')->field('t1.id, t1.device_type, t1.source_id, t1.content_type, t1.content_desc, t1.status, t1.report_time, t2.plate as name, t2.company_id')->select();
                     break;
                 case 2:
+                    //环卫工人
                     if($companyId) {
                         $condition['company_id'] = $companyId;
                     }
@@ -231,6 +233,7 @@ class AlertController extends BaseController
                     $data = M('alert')->where($condition)->alias('t1')->join('left join san_employee t2 ON t1.source_id=t2.id')->field('t1.id, t1.device_type, t1.source_id, t1.content_type, t1.content_desc, t1.status, t1.report_time, t2.name, t2.company_id')->select();
                     break;
                 case 3:
+                    //垃圾中转站
                     if($companyId) {
                         $condition['company_id'] = $companyId;
                     }
@@ -240,6 +243,7 @@ class AlertController extends BaseController
                     $data = M('alert')->where($condition)->alias('t1')->join('left join san_waste_station t2 ON t1.source_id=t2.id')->field('t1.id, t1.device_type, t1.source_id, t1.content_type, t1.content_desc, t1.status, t1.report_time, t2.name, t2.company_id')->select();
                     break;
                 case 4:
+                    //垃圾回收点
                     if($companyId) {
                         $condition['company_id'] = $companyId;
                     }
@@ -257,12 +261,83 @@ class AlertController extends BaseController
             }
         }
         else if($companyId || $districtId || $name) {
+            if($districtId) {
+                //垃圾回收点或者中转站
+//                $condition['']
+            }
+            else {
+                //车辆，人员，垃圾回收点或者中转站
 
+            }
         }
         else {
 
         }
 
+    }
+
+    public function getAlerts() {
+        $alertDeviceType = I('post.alertDeviceType');
+        $alertType = I('post.alertType');
+        $companyId = I('post.companyId');
+        $districtId = I('post.districtId');
+        $name = I('post.name');
+
+        $startTime = I('post.startTime');
+        $endTime = I('post.endTime');
+        $alertStatus = I('post.alertStatus');
+
+        if($startTime) {
+            $condition['report_time'] = array('egt', $startTime);
+        }
+        if($endTime) {
+            $condition['report_time'] = array('elt', $endTime);
+        }
+        if($alertStatus == 'new') {
+            $condition['status'] = 0;
+        }
+        else if ($alertStatus == 'old') {
+            $condition['status'] = array('neq', 0);
+        }
+        if($alertDeviceType) {
+            $condition['device_type'] = intval($alertDeviceType);
+        }
+        if($alertType) {
+            $condition['content_type'] = intval($alertType);
+        }
+        if($companyId) {
+//            $condition['source_company_id'] = intval($companyId);
+            $condition['source_company_id'] = $companyId;
+        }
+        if($districtId) {
+            $condition['source_district_id'] = intval($districtId);
+        }
+        if($name) {
+            $condition['source_name'] = array('like', '%'.$name.'%');
+        }
+
+//        dump($condition);
+
+        $dao = M('alert');
+        $data = $dao->where($condition)->select();
+//        $data = $dao->where('source_company_id=1')->select();
+        for($i = 0; $i < count($data); $i++) {
+            $data[$i]['device_type_desc'] = $this->getDeviceType($data[$i]['device_type']);
+            $data[$i]['content_type_desc'] = $this->getContentType($data[$i]['content_type']);
+        }
+
+        $ret['alerts'] = $data;
+
+        if($alertStatus == 'new' || $alertStatus == 'all' || empty($alertStatus)) {
+            $update['status'] = 1;
+            $condition['status'] = 0;
+            $flag = $dao->where($condition)->save($update);
+            if($flag === false) {
+                exit (wrapResult('CM0005'));
+            }
+        }
+
+        echo (wrapResult('CM0000', $ret));
     }
 
     private function getDeviceType($id) {

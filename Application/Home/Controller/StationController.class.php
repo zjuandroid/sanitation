@@ -28,7 +28,7 @@ class StationController extends BaseController
         $name = I('post.name');
 
         if($districtId) {
-            $condition['district_id'] = $districtId;
+            $condition['district_id'] = intval($districtId);
         }
         if($name) {
             $condition['name'] = array('like', '%'.$name.'%');
@@ -131,7 +131,7 @@ class StationController extends BaseController
         }
 
         if($districtId) {
-            $condition['district_id'] = $districtId;
+            $condition['district_id'] = intval($districtId);
         }
         if($name) {
             $condition['name'] = array('like', '%'.$name.'%');

@@ -282,11 +282,12 @@ class TestController extends Controller{
     }
 
     public function getAlerts() {
-        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlerts';
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+//        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlerts';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/Alert/getAlerts';
 
 
         $post_data['alertStatus'] = 'all';
+//        $post_data['companyId'] = 1;
 //        $post_data['plate'] = '72';
 
         $res = request_post($url, $post_data);
@@ -294,8 +295,8 @@ class TestController extends Controller{
     }
 
     public function getAlertDeviceType() {
-        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlertDeviceType';
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+//        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlertDeviceType';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/Alert/getAlertDeviceType';
 
 
         $post_data['xxx'] = 'all';
@@ -306,8 +307,8 @@ class TestController extends Controller{
     }
 
     public function getAlertType() {
-        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlertType';
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+//        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlertType';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/Alert/getAlertType';
 
 
         $post_data['xxx'] = 'all';
@@ -319,8 +320,15 @@ class TestController extends Controller{
 
     public function addNewAlert() {
 
-        $alert['type'] = 1;
-        $alert['content'] = '沪A13872发生故障';
+        $alert['device_type'] = 101;
+        $alert['source_id'] = 1;
+
+        $alert['source_name'] = 'A13871';
+        $alert['source_company_id'] = 1;
+        $alert['source_company_name'] = '清洁公司1';
+        $alert['content_type'] = 101;
+        $alert['content_desc'] = '骤降7';
+        $alert['status'] = 0;
         $alert['report_time'] = time();
 
         M('alert')->add($alert);
