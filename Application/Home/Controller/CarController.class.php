@@ -145,7 +145,7 @@ class CarController extends BaseController
             $condition['plate'] = array('like', '%'.$plate.'%');
         }
 
-        $dao = M('car_his_pos');
+        $dao = M('car_his');
         $data = $dao->where($condition)->alias('t1')->join('left join san_car t2 ON t1.car_id=t2.id')->join('left join san_company t3 ON t2.company_id=t3.id')->field('t1.id, t1.car_id, t1.report_time, t1.his_long, t1.his_lat, t2.plate, t2.company_id, t3.company_name')->order('t2.company_id, t1.car_id, t1.report_time')->select();
 
 //        dump($data);
@@ -237,7 +237,7 @@ class CarController extends BaseController
 
 //        dump($idList);
 
-        $dao = M('car_his_pos');
+        $dao = M('car_his');
         $carList = null;
         $carInfo = M('car')->field('id, plate')->where('id in ('.$carIds.')')->select();
 
