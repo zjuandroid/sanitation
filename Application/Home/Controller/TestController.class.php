@@ -334,6 +334,32 @@ class TestController extends Controller{
         M('alert')->add($alert);
     }
 
+    public function getCarReport() {
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
+        $url = 'http://localhost/sanitation/index.php/home/report/getCarReport';
+        $post_data['startTime'] = 1473082656;
+        $post_data['endTime'] = 1473092731;
+
+        $post_data['xxx'] = 'all';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function getPersonReport() {
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
+        $url = 'http://localhost/sanitation/index.php/home/report/getPersonReport';
+        $post_data['startTime'] = 1473082656;
+        $post_data['endTime'] = 1473092731;
+
+        $post_data['xxx'] = 'all';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);
