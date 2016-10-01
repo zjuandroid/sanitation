@@ -234,22 +234,23 @@ CREATE TABLE san_collect_point_his(
 id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 collect_point_id VARCHAR (10) NOT NULL,
 full_num int,
+delta_weight DOUBLE ,
 report_time int
 )engine=InnoDB DEFAULT CHARSET = utf8;
 
-INSERT INTO san_collect_point_his(collect_point_id, full_num, report_time)
+INSERT INTO san_collect_point_his(collect_point_id, full_num, report_time, delta_weight)
 VALUES
-(1, 2, 1466418002),
-(1, 1, 1466419002),
-(1, 0, 1466420002),
-(1, 1, 1466431002),
-(1, 2, 1466432002),
-(1, 2, 1466433002),
-(1, 2, 1466434002),
-(2, 1, 1466418002),
-(2, 0, 1466419002),
-(2, 1, 1466420002),
-(2, 1, 1466421002);
+(1, 2, 1466418002, 100),
+(1, 1, 1466419002, 200),
+(1, 0, 1466420002, 100),
+(1, 1, 1466431002, 100),
+(1, 2, 1466432002, 100),
+(1, 2, 1466433002, 100),
+(1, 2, 1466434002, 100),
+(2, 1, 1466418002, 100),
+(2, 0, 1466419002, 100),
+(2, 1, 1466420002, 100),
+(2, 1, 1466421002, 100);
 
 DROP TABLE if EXISTS san_dustbin;
 CREATE TABLE san_dustbin(

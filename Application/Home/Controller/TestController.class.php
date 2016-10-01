@@ -374,6 +374,19 @@ class TestController extends Controller{
         print_r($res);
     }
 
+    public function getCollectPointReport() {
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
+        $url = 'http://localhost/sanitation/index.php/home/report/getCollectPointReport';
+        $post_data['startTime'] = 1466418002;
+        $post_data['endTime'] = 1466434002;
+
+        $post_data['xxx'] = 'all';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);

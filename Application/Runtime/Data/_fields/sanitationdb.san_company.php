@@ -1,1 +1,1 @@
-a:6:{i:0;s:2:"ID";i:1;s:12:"COMPANY_NAME";i:2;s:15:"COMPANY_ADDRESS";i:3;s:10:"CONTACT_ID";s:3:"_pk";s:2:"ID";s:5:"_type";a:4:{s:2:"ID";s:7:"int(11)";s:12:"COMPANY_NAME";s:11:"varchar(40)";s:15:"COMPANY_ADDRESS";s:12:"varchar(100)";s:10:"CONTACT_ID";s:6:"int(8)";}}
+a:6:{i:0;s:2:"id";i:1;s:12:"company_name";i:2;s:15:"company_address";i:3;s:10:"contact_id";s:3:"_pk";s:2:"id";s:5:"_type";a:4:{s:2:"id";s:7:"int(11)";s:12:"company_name";s:11:"varchar(40)";s:15:"company_address";s:12:"varchar(100)";s:10:"contact_id";s:6:"int(8)";}}
