@@ -287,12 +287,16 @@ class AlertController extends BaseController
         $endTime = I('post.endTime');
         $alertStatus = I('post.alertStatus');
 
-        if($startTime) {
+        if($startTime && $endTime) {
+            $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
+        }
+        else if($startTime) {
             $condition['report_time'] = array('egt', $startTime);
         }
-        if($endTime) {
+        else if($endTime) {
             $condition['report_time'] = array('elt', $endTime);
         }
+
         if($alertStatus == 'new') {
             $condition['status'] = 0;
         }
