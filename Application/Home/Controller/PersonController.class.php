@@ -103,8 +103,9 @@ class PersonController extends BaseController
             exit(wrapResult('CM0002'));
         }
         else {
-            $condition['report_time'] = array('egt', $startTime);
-            $condition['report_time'] = array('elt', $endTime);
+//            $condition['report_time'] = array('egt', $startTime);
+//            $condition['report_time'] = array('elt', $endTime);
+            $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
         }
 
         if($companyId) {
@@ -219,8 +220,9 @@ class PersonController extends BaseController
 
         for($i = 0; $i < count($idList); $i++) {
             $condition['person_id'] = $idList[$i];
-            $condition['report_time'] = array('egt', $startTimeList[$i]);
-            $condition['report_time'] = array('elt', $endTimeList[$i]);
+//            $condition['report_time'] = array('egt', $startTimeList[$i]);
+//            $condition['report_time'] = array('elt', $endTimeList[$i]);
+            $condition['report_time'] = array(array('egt', $startTimeList[$i]), array('elt',  $endTimeList[$i]));
 
             $seg['person_id'] = $idList[$i];
             $seg['name'] = $this->getNameById($personInfo, $idList[$i]);

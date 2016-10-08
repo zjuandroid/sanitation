@@ -110,8 +110,9 @@ class StationController extends BaseController
         }
 
         $hisDao = M('waste_station_his');
-        $where['report_time'] = array('egt', $startTime);
-        $where['report_time'] = array('elt', $endTime);
+//        $where['report_time'] = array('egt', $startTime);
+//        $where['report_time'] = array('elt', $endTime);
+        $where['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
         $data = $hisDao->where($where)->field('waste_station_id')->group('waste_station_id')->select();
 //        $data = $dao->where($where)->getField('waste_station_id')->group('waste_station_id');
         $idList = null;
@@ -183,8 +184,9 @@ class StationController extends BaseController
     }
 
     private function getHisFullState($dao, $id, $startTime, $endTime) {
-        $where['report_time'] = array('egt', $startTime);
-        $where['report_time'] = array('elt', $endTime);
+//        $where['report_time'] = array('egt', $startTime);
+//        $where['report_time'] = array('elt', $endTime);
+        $where['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
         $where['waste_station_id'] = $id;
         $where['water_level'] = array('egt', C('MAX_WATER_LEVEL'));
 
@@ -216,8 +218,9 @@ class StationController extends BaseController
         foreach($data as $station) {
             $condition = null;
             $condition['waste_station_id'] = $station['id'];
-            $condition['report_time'] = array('egt', $startTime);
-            $condition['report_time'] = array('elt', $endTime);
+//            $condition['report_time'] = array('egt', $startTime);
+//            $condition['report_time'] = array('elt', $endTime);
+            $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
 
             $data[$i++]['points'] = $hisDao->where($condition)->field('report_time, water_level')->order('report_time')->select();
         }

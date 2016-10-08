@@ -246,8 +246,9 @@ class DustbinController extends BaseController
         }
 
         $hisDao = M('collect_point_his');
-        $where['report_time'] = array('egt', $startTime);
-        $where['report_time'] = array('elt', $endTime);
+//        $where['report_time'] = array('egt', $startTime);
+//        $where['report_time'] = array('elt', $endTime);
+        $where['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
         $data = $hisDao->where($where)->field('collect_point_id')->group('collect_point_id')->select();
         $idList = null;
         foreach($data as $item) {
@@ -359,8 +360,9 @@ class DustbinController extends BaseController
         foreach($data as $point) {
             $condition = null;
             $condition['collect_point_id'] = $point['id'];
-            $condition['report_time'] = array('egt', $startTime);
-            $condition['report_time'] = array('elt', $endTime);
+//            $condition['report_time'] = array('egt', $startTime);
+//            $condition['report_time'] = array('elt', $endTime);
+            $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
 
             $data[$i++]['points'] = $hisDao->where($condition)->field('report_time, full_num')->order('report_time')->select();
         }

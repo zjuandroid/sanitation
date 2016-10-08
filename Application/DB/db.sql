@@ -48,7 +48,8 @@ contact_id int(8)
 INSERT INTO san_company(company_name, company_address, contact_id)
 VALUES
 ('清洁公司1', '盛夏路111弄', 1),
-('清洁公司2', '益江路112弄', 2);
+('清洁公司2', '益江路112弄', 2),
+('清洁公司XX', '益江路113弄', 3);;
 
 drop TABLE if EXISTS san_employee;
 CREATE TABLE san_employee(
@@ -186,27 +187,28 @@ CREATE TABLE san_waste_station_his(
 id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 waste_station_id INT (11) NOT NULL,
 report_time int NOT NULL,
-water_level DOUBLE
+water_level DOUBLE,
+delta_weight DOUBLE
 )engine=InnoDB DEFAULT CHARSET = utf8;
 
-INSERT INTO san_waste_station_his(waste_station_id, report_time, water_level)
+INSERT INTO san_waste_station_his(waste_station_id, report_time, water_level, delta_weight)
 VALUES
-(1, 1473082656, 1.5),
-(1, 1473087656, 1.5),
-(1, 1473092656, 1.5),
-(1, 1473097656, 2),
-(1, 1473102656, 1.5),
-(1, 1473107656, 1.5),
-(2, 1473082656, 1.5),
-(2, 1473087656, 1.5),
-(2, 1473092656, 1.5),
-(2, 1473097656, 1.5),
-(2, 1473102656, 1.5),
-(2, 1473107656, 1.5),
-(3, 1473082656, 1.5),
-(3, 1473087656, 1.5),
-(3, 1473092656, 1.5),
-(3, 1473097656, 1.5);
+(1, 1473082656, 1.5, 1000),
+(1, 1473087656, 1.5, 500),
+(1, 1473092656, 1.5, 200),
+(1, 1473097656, 2 , 500),
+(1, 1473102656, 1.5, 500),
+(1, 1473107656, 1.5, 500),
+(2, 1473082656, 1.5, 500),
+(2, 1473087656, 1.5, 500),
+(2, 1473092656, 1.5, 500),
+(2, 1473097656, 1.5, 500),
+(2, 1473102656, 1.5, 500),
+(2, 1473107656, 1.5, 500),
+(3, 1473082656, 1.5, 500),
+(3, 1473087656, 1.5, 500),
+(3, 1473092656, 1.5, 500),
+(3, 1473097656, 1.5, 500);
 
 DROP TABLE if EXISTS san_collect_point;
 CREATE TABLE san_collect_point(
@@ -232,22 +234,23 @@ CREATE TABLE san_collect_point_his(
 id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 collect_point_id VARCHAR (10) NOT NULL,
 full_num int,
+delta_weight DOUBLE ,
 report_time int
 )engine=InnoDB DEFAULT CHARSET = utf8;
 
-INSERT INTO san_collect_point_his(collect_point_id, full_num, report_time)
+INSERT INTO san_collect_point_his(collect_point_id, full_num, report_time, delta_weight)
 VALUES
-(1, 2, 1466418002),
-(1, 1, 1466419002),
-(1, 0, 1466420002),
-(1, 1, 1466431002),
-(1, 2, 1466432002),
-(1, 2, 1466433002),
-(1, 2, 1466434002),
-(2, 1, 1466418002),
-(2, 0, 1466419002),
-(2, 1, 1466420002),
-(2, 1, 1466421002);
+(1, 2, 1466418002, 100),
+(1, 1, 1466419002, 200),
+(1, 0, 1466420002, 100),
+(1, 1, 1466431002, 100),
+(1, 2, 1466432002, 100),
+(1, 2, 1466433002, 100),
+(1, 2, 1466434002, 100),
+(2, 1, 1466418002, 100),
+(2, 0, 1466419002, 100),
+(2, 1, 1466420002, 100),
+(2, 1, 1466421002, 100);
 
 DROP TABLE if EXISTS san_dustbin;
 CREATE TABLE san_dustbin(

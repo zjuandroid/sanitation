@@ -134,8 +134,9 @@ class CarController extends BaseController
             exit(wrapResult('CM0002'));
         }
         else {
-            $condition['report_time'] = array('egt', $startTime);
-            $condition['report_time'] = array('elt', $endTime);
+//            $condition['report_time'] = array('egt', $startTime);
+//            $condition['report_time'] = array('elt', $endTime);
+            $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
         }
 
         if($companyId) {
@@ -244,8 +245,9 @@ class CarController extends BaseController
         for($i = 0; $i < count($idList); $i++) {
             $seg = null;
             $condition['car_id'] = $idList[$i];
-            $condition['report_time'] = array('egt', $startTimeList[$i]);
-            $condition['report_time'] = array('elt', $endTimeList[$i]);
+//            $condition['report_time'] = array('egt', $startTimeList[$i]);
+//            $condition['report_time'] = array('elt', $endTimeList[$i]);
+            $condition['report_time'] = array(array('egt', $startTimeList[$i]), array('elt', $endTimeList[$i]));
 
             $seg['car_id'] = $idList[$i];
             $seg['plate'] = $this->getNameById($carInfo, $idList[$i]);
