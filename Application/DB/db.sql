@@ -322,7 +322,7 @@ service_district tinyint  #100为市级权限
 insert into san_manager (manager_name, service_district) values ('王局长', 100);
 
 
-DROP TABLE IF EXISTS errcode;
+DROP TABLE IF EXISTS san_errcode;
 
 CREATE TABLE san_errcode(
 code varchar(10) NOT NULL PRIMARY KEY,
@@ -337,3 +337,47 @@ VALUES
 	('CM0003', '缺少必须参数'),
 	('CM0004', '参数错误'),
 	('CM0005', '数据库操作失败');
+
+DROP TABLE if EXISTS san_collect_station;
+
+DROP TABLE if EXISTS san_collect_station;
+CREATE TABLE san_collect_station(
+id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+collect_station_no VARCHAR (10) NOT NULL,
+name VARCHAR (40),
+company_id int(4),
+district_id int(4),
+address VARCHAR (100),
+online tinyint(1),
+state int,
+update_time int
+)engine=InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO san_collect_station(collect_station_no, name, address, online, state, update_time, company_id, district_id)
+VALUES
+('00001', '1号回收站', '盛夏路31号', 1, 0, 1466418002, 1, 6),
+('00002', '2号回收站', '盛夏路32号', 1, 0, 1466418002, 1, 6),
+('00003', '3号回收站', 'XX路33号', 0, 1, 1466418002, 2, 9);
+
+DROP TABLE if EXISTS san_collect_station_his;
+CREATE TABLE san_collect_station_his(
+id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+collect_station_id VARCHAR (10) NOT NULL,
+full_num int,
+delta_weight DOUBLE ,
+report_time int
+)engine=InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO san_collect_station_his(collect_station_id, full_num, report_time, delta_weight)
+VALUES
+(1, 2, 1466418002, 100),
+(1, 1, 1466419002, 200),
+(1, 0, 1466420002, 100),
+(1, 1, 1466431002, 100),
+(1, 2, 1466432002, 100),
+(1, 2, 1466433002, 100),
+(1, 2, 1466434002, 100),
+(2, 1, 1466418002, 100),
+(2, 0, 1466419002, 100),
+(2, 1, 1466420002, 100),
+(2, 1, 1466421002, 100);

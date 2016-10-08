@@ -350,12 +350,8 @@ class TestController extends Controller{
     public function getPersonReport() {
 //        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
         $url = 'http://localhost/sanitation/index.php/home/report/getPersonReport';
-<<<<<<< HEAD
-        $post_data['startTime'] = 1473082656;
-=======
 //        $post_data['startTime'] = 1473082656;
         $post_data['startTime'] = 1473092731;
->>>>>>> ac4269f9f27291d3c02c24856be16d644cd5f6ce
         $post_data['endTime'] = 1473092731;
 
         $post_data['xxx'] = 'all';
@@ -365,11 +361,9 @@ class TestController extends Controller{
         print_r($res);
     }
 
-<<<<<<< HEAD
-=======
     public function getWasteStationReport() {
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
-        $url = 'http://localhost/sanitation/index.php/home/report/getWasteStationReport';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getWasteStationReport';
+//        $url = 'http://localhost/sanitation/index.php/home/report/getWasteStationReport';
         $post_data['startTime'] = 1473082656;
         $post_data['endTime'] = 1473107656;
 
@@ -381,7 +375,7 @@ class TestController extends Controller{
     }
 
     public function getCollectPointReport() {
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCollectPointReport';
         $url = 'http://localhost/sanitation/index.php/home/report/getCollectPointReport';
         $post_data['startTime'] = 1466418002;
         $post_data['endTime'] = 1466434002;
@@ -393,7 +387,19 @@ class TestController extends Controller{
         print_r($res);
     }
 
->>>>>>> ac4269f9f27291d3c02c24856be16d644cd5f6ce
+    public function getCollectStationReport() {
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCollectStationReport';
+        $url = 'http://localhost/sanitation/index.php/home/report/getCollectStationReport';
+        $post_data['startTime'] = 1466418002;
+        $post_data['endTime'] = 1466434002;
+
+        $post_data['xxx'] = 'all';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);

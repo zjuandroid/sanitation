@@ -129,11 +129,7 @@ class ReportController extends BaseController
             $condition['company_id'] = $companyId;
         }
         if($name) {
-<<<<<<< HEAD
-            $condition['name'] = $name;
-=======
             $condition['name'] = array('like', '%'.$name.'%');
->>>>>>> ac4269f9f27291d3c02c24856be16d644cd5f6ce
         }
 
         //根据公司和姓名获取人员的范围
@@ -155,23 +151,15 @@ class ReportController extends BaseController
             exit(wrapResult('CM0000'));
         }
 
-<<<<<<< HEAD
-        $condition['report_time'] = array('egt', $startTime);
-        $condition['report_time'] = array('elt', $endTime);
-=======
 //        $condition['report_time'] = array('egt', $startTime);
 //        $condition['report_time'] = array('elt', $endTime);
         $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
->>>>>>> ac4269f9f27291d3c02c24856be16d644cd5f6ce
         $hisDao = M('person_his');
         $data = null;
         $data = $hisDao->where($condition)->order('person_id, report_time')->select();
 
-<<<<<<< HEAD
-=======
-        dump($data);
+//        dump($data);
 
->>>>>>> ac4269f9f27291d3c02c24856be16d644cd5f6ce
         $num = 0;
         $time = 0;
         $distance = 0;
@@ -210,8 +198,6 @@ class ReportController extends BaseController
 
         return null;
     }
-<<<<<<< HEAD
-=======
 
     public function getWasteStationReport() {
         $districtId = I('post.districtId');
@@ -377,5 +363,72 @@ class ReportController extends BaseController
         return null;
     }
 
->>>>>>> ac4269f9f27291d3c02c24856be16d644cd5f6ce
+
+    public function getCollectStationReport() {
+        $districtId = I('post.districtId');
+        $streetId = I('post.streetId');
+        $name = I('post.name');
+        $startTime = I('post.startTime');
+        $endTime = I('post.endTime');
+
+        if(empty($startTime) || empty($endTime) || $endTime-$startTime>C('MAX_REPORT_TIME_SPAN')) {
+            exit(wrapResult('CM0002'));
+        }
+
+        if($streetId) {
+            $condition['district_id'] = $districtId;
+        }
+        else if($districtId) {
+            $streetList = M('district')->where('pid = '.$districtId)->field('id')->select();
+            $arr = array();
+            foreach($streetList as $street) {
+                $arr[] = $street['id'];
+            }
+            $str = implode(',', $arr);
+            rtrim($str, ',');
+
+            $condition['district_id'] = array('in', $str);
+        }
+        if($name) {
+            $condition['name'] = array('like', '%'.$name.'%');
+        }
+
+        //根据公司和姓名获取人员的范围
+        $dao = M('collect_station');
+        $data = $dao->where($condition)->group('id')->select();
+        $companyTable = M('company')->field('id, company_name')->select();
+        $collectStationTable = $dao->field('id, name, company_id, address')->select();
+        $idList = null;
+        foreach($data as $item) {
+            $idList[] = $item['id'];
+        }
+
+        if($idList)
+        {
+            $str = implode(',', $idList);
+            $condition['collect_station_id'] = array('in', $str);
+        }
+        else {
+            exit(wrapResult('CM0000'));
+        }
+
+//        $condition['report_time'] = array('egt', $startTime);
+//        $condition['report_time'] = array('elt', $endTime);
+        $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
+        $hisDao = M('collect_station_his');
+        $data = null;
+//        dump($condition);
+        $data = $hisDao->where($condition)->field('collect_station_id, sum(delta_weight) as sum_weight')->group('collect_station_id')->select();
+
+        $i = 0;
+        foreach($data as $item) {
+            $data[$i]['collect_station_name'] = $this->getCollectPointName($collectStationTable, $item['collect_station_id']);
+            $data[$i]['collect_station_address'] = $this->getCollectPointAddress($collectStationTable, $item['collect_station_id']);
+            $data[$i]['company_name'] = $this->getCompanyName($companyTable, $collectStationTable, $item['collect_station_id']);
+            $i++;
+        }
+
+        $ret['collect_station_reports'] = $data;
+        echo (wrapResult('CM0000', $ret));
+    }
 }
