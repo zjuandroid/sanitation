@@ -49,7 +49,7 @@ INSERT INTO san_company(company_name, company_address, contact_id)
 VALUES
 ('清洁公司1', '盛夏路111弄', 1),
 ('清洁公司2', '益江路112弄', 2),
-('清洁公司XX', '益江路113弄', 3);;
+('清洁公司XX', '益江路113弄', 3);
 
 drop TABLE if EXISTS san_employee;
 CREATE TABLE san_employee(
