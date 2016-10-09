@@ -404,7 +404,7 @@ class TestController extends Controller{
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);
 //        dump($obj);
-        echo date("Y-m-d H:i:s",1466354044);     # 格式化时间戳
+        echo date("Y-m-d H:i:s",time());     # 格式化时间戳
     }
 
 
