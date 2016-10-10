@@ -112,7 +112,7 @@ class PersonController extends BaseController
             $condition['company_id'] = $companyId;
         }
         if($employeeNo) {
-            $condition['plate'] = array('employee_no', '%'.$employeeNo.'%');
+            $condition['employee_no'] = array('employee_no', '%'.$employeeNo.'%');
         }
         if($name) {
             $condition['name'] = array('name', '%'.$name.'%');

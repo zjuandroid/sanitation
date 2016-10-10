@@ -413,6 +413,19 @@ class TestController extends Controller{
         print_r($res);
     }
 
+    public function getPersonEvaluation() {
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCollectStationReport';
+        $url = 'http://localhost/sanitation/index.php/home/Evaluation/getPersonEvaluation';
+        $post_data['startTime'] = 1475251200;
+        $post_data['endTime'] = 1477843200;
+
+        $post_data['xxx'] = 'all';
+//        $post_data['plate'] = '72';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);

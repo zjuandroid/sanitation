@@ -406,3 +406,25 @@ VALUES
 (1, '2016-10-01', '祖冲之路金科路','04:00', '08:00', 10, 2, '03:50', '07:50', 8, 12, 1.98, 99),
 (1, '2016-10-02', '祖冲之路金科路','04:00', '08:00', 10, 2, '03:50', '07:50', 8, 12, 1.98, 99),
 (2, '2016-10-07', '张江路紫薇路','14:00', '18:00', 10, 2, '13:50', '17:50', 8, 12, 2, 100);
+
+DROP TABLE if EXISTS san_evaluation_person;
+
+CREATE TABLE san_evaluation_person(
+id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+date_time VARCHAR (10),
+person_id INT (11) NOT NULL,
+preset_road VARCHAR(50) NOT NULL,
+preset_start_time VARCHAR(5),
+preset_end_time VARCHAR (5),
+preset_length DOUBLE ,
+actual_start_time VARCHAR(5),
+actual_end_time VARCHAR (5),
+actual_length DOUBLE ,
+reaching_standard_rate DOUBLE
+)engine=InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO san_evaluation_person(person_id, date_time, preset_road, preset_start_time, preset_end_time, preset_length, actual_start_time, actual_end_time, actual_length, reaching_standard_rate)
+VALUES
+(1, '2016-10-01', '祖冲之路金科路','04:00', '08:00', 5, '03:50', '07:50', 5.5, 99),
+(1, '2016-10-02', '祖冲之路金科路','04:00', '08:00', 5, '03:50', '07:50', 5.5, 99),
+(2, '2016-10-07', '张江路紫薇路','14:00', '18:00', 10, '13:50', '17:50', 8, 100);
