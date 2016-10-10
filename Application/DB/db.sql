@@ -14,7 +14,7 @@ plate VARCHAR(10) NOT NULL,
 company_id int(4),
 service_district tinyint,
 driver_id int(8),
-car_type tinyint DEFAULT 1 COMMENT '1:普通车',
+car_type int DEFAULT 101 COMMENT '1:普通车',
 car_online tinyint(1),
 car_state int,
 cur_long DOUBLE(10,6),
@@ -30,12 +30,12 @@ week_ave_oil_consumption DOUBLE,
 video_url VARCHAR (100)
 )engine=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO san_car(plate, company_id, car_online, car_state, cur_long, cur_lat, cur_velocity, cur_oil_amount, cur_report_time, update_time, video_url)
+INSERT INTO san_car(plate,car_type, company_id, car_online, car_state, cur_long, cur_lat, cur_velocity, cur_oil_amount, cur_report_time, update_time, video_url)
 VALUES
-('沪A13871', 1, 1, 0, 121.641357,31.209006, 70, 55.5, 1466418002, 1466418002, 'carMonitor.flv'),
-('沪A13872', 1, 1, 0, 121.639273,31.208512, 70, 55.5, 1466418002, 1466418002, 'carMonitor.flv'),
-('沪A13873', 2, 0, 0, 121.63992,31.201933, 70, 30.5, 1466418002, 1466418002, 'carMonitor.flv'),
-('沪A13874', 1, 0, 0, 121.63992,31.202933, 70, 30.5, 1466418002, 1466418002, 'carMonitor.flv');
+('沪A13871',101, 1, 1, 0, 121.641357,31.209006, 70, 55.5, 1466418002, 1466418002, 'carMonitor.flv'),
+('沪A13872',101, 1, 1, 0, 121.639273,31.208512, 70, 55.5, 1466418002, 1466418002, 'carMonitor.flv'),
+('沪A13873',102, 2, 0, 0, 121.63992,31.201933, 70, 30.5, 1466418002, 1466418002, 'carMonitor.flv'),
+('沪A13874',102, 1, 0, 0, 121.63992,31.202933, 70, 30.5, 1466418002, 1466418002, 'carMonitor.flv');
 
 
 drop TABLE if EXISTS san_company;
