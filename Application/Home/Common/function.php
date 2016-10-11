@@ -40,7 +40,7 @@ function request_post($url = '', $post_data = '') {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
     $data = curl_exec($ch);//运行curl
     curl_close($ch);
-
+//dump($data);
     return $data;
 }
 

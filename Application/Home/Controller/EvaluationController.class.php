@@ -106,5 +106,30 @@ class EvaluationController extends BaseController {
         if($companyId) {
             $condition['company_id'] = $companyId;
         }
+
+        $car_complete = array(99, 100, 98, 90, 95, 99, 97, 80, 98, 95);
+        $person_complete = array(97, 98, 90, 95, 99, 97, 80, 98, 95, 100);
+        $score_reduce = array(20, 25, 30, 10, 9, 5, 30, 25, 10);
+
+        $days = floor(($endTime - $startTime) / (24*60*60));
+        $index = $days % 10;
+
+        $dao = M('company');
+        $data = $dao->where($condition)->field('id, company_name')->select();
+//dump($data);
+        $i = 0;
+        foreach($data as $item) {
+            $data[$i]['start_date'] = $beginDate;
+            $data[$i]['end_date'] = $endDate;
+            $data[$i]['car_complete_rate'] = $car_complete[$index];
+            $data[$i]['person_complete_rate'] = $person_complete[$index];
+            $data[$i]['score_reduce'] = $score_reduce[$index];
+
+            $i++;
+        }
+
+        $ret['evaluation_records'] = $data;
+
+        echo (wrapResult('CM0000', $ret));
     }
 }
