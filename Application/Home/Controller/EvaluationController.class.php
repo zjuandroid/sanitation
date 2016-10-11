@@ -85,7 +85,7 @@ class EvaluationController extends BaseController {
 
         $dao = M('evaluation_person');
         $data = $dao->where($condition)->alias('t1')->join('left join san_employee t2 ON t1.person_id=t2.id')->join('left join san_company t3 ON t2.company_id=t3.id')->field('t1.id, t1.person_id, t1.date_time, t1.preset_road, t1.preset_start_time, t1.preset_end_time, t1.preset_length, t1.actual_start_time, t1.actual_end_time, t1.actual_length, t1.reaching_standard_rate, t2.name, t2.employee_no, t2.company_id, t3.company_name')->order('t2.company_id, t1.person_id, t1.date_time')->select();
-
+//        dump($data);
         $ret['evaluation_records'] = $data;
 
         echo (wrapResult('CM0000', $ret));

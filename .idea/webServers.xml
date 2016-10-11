@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="3c6b486d-6ba9-4e48-b84d-627d2de211e5" name="sanitation" url="http://115.159.66.204">
-        <fileTransfer host="115.159.66.204" port="22" rootFolder="/work/wangchao/www/html" accessType="SFTP" password="dfdddfcbdfc4dfcddfc9dfc2dfcbdfc5" username="wangchao">
+        <fileTransfer host="115.159.66.204" port="22" rootFolder="/home/wangchao/www/html" accessType="SFTP" password="dfdddfcbdfc4dfcddfc9dfc2dfcbdfc5" username="wangchao">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

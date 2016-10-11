@@ -9,7 +9,7 @@ function wrapResult($code, $data = null) {
     $result['code'] = $code;
     $result['message'] = M('errcode')->where($result)->getField('msg');
     $result['data'] = $data;
-//	dump($result);
+//	dump(json_encode($result));
     return json_encode($result, JSON_UNESCAPED_UNICODE);
 }
 
@@ -39,8 +39,9 @@ function request_post($url = '', $post_data = '') {
     curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
     curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
     $data = curl_exec($ch);//运行curl
+
     curl_close($ch);
-//dump($data);
+
     return $data;
 }
 

@@ -418,7 +418,7 @@ class TestController extends Controller{
 //        $url = 'http://localhost/sanitation/index.php/home/Evaluation/getPersonEvaluation';
         $post_data['startTime'] = 1475251200;
         $post_data['endTime'] = 1477843200;
-
+//        phpinfo();
         $post_data['xxx'] = 'all';
 //        $post_data['plate'] = '72';
 
