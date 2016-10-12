@@ -414,7 +414,9 @@ class TestController extends Controller{
     }
 
     public function getPersonEvaluation() {
-        $url = 'http://115.159.66.204/sanitation/index.php/home/Evaluation/getPersonEvaluation';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/Evaluation/getPersonEvaluation';
+//        $url = 'http://115.159.66.204/sanitation/index.php?m=home&c=evaluation&a=getPersonEvaluation';
+        $url = 'http://115.159.66.204/sanitation/?s=home/Evaluation/getPersonEvaluation';
 //        $url = 'http://localhost/sanitation/index.php/home/Evaluation/getPersonEvaluation';
         $post_data['startTime'] = 1475251200;
         $post_data['endTime'] = 1477843200;
