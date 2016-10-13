@@ -37,8 +37,8 @@ class TestController extends Controller{
     }
 
     public function getCars() {
-        $url = 'http://localhost/sanitation/index.php/home/company/getCars';
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcars';
+//        $url = 'http://localhost/sanitation/index.php/home/Car/getCars';
+        $url = 'http://115.159.66.204/sanitation/?s=home/Car/getCars';
 
         $post_data['companyId'] = '1';
         $post_data['plate'] = '8';
