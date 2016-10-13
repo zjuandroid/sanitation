@@ -94,10 +94,10 @@ class DustbinController extends BaseController
             $condition['district_id'] = array('in', $str);
         }
         if($name) {
-            $condition['name'] = array('like', '%'.$name.'%');
+            $condition['t1.name'] = array('like', '%'.$name.'%');
         }
         if($pointNo) {
-            $condition['point_no'] = array('like', '%'.$pointNo.'%');
+            $condition['t1.point_no'] = array('like', '%'.$pointNo.'%');
         }
 
         $dao = M('collect_point');

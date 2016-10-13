@@ -101,6 +101,7 @@ class TestController extends Controller{
 
         $post_data['districtId555'] = 1;
 //        $post_data['plate'] = '72';
+        $post_data['name'] = '三林';
 
         $res = request_post($url, $post_data);
         print_r($res);
@@ -129,8 +130,8 @@ class TestController extends Controller{
     }
 
     public function getCollectPoints() {
-//        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getCollectPoints';
-        $url = 'http://115.159.66.204/sanitation/index.php/home/Dustbin/getCollectPoints';
+        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getCollectPoints';
+//        $url = 'http://115.159.66.204/sanitation/index.php/home/Dustbin/getCollectPoints';
 
         $post_data['districtId555'] = '10';
 //        $post_data['plate'] = '72';

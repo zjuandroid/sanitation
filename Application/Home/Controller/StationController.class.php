@@ -31,7 +31,7 @@ class StationController extends BaseController
             $condition['district_id'] = intval($districtId);
         }
         if($name) {
-            $condition['name'] = array('like', '%'.$name.'%');
+            $condition['t1.name'] = array('like', '%'.$name.'%');
         }
 
         $dao = M('waste_station');
