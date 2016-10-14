@@ -119,8 +119,8 @@ class TestController extends Controller{
     }
 
     public function getStreets() {
-        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getStreets';
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getPersonInfo';
+//        $url = 'http://localhost/sanitation/index.php/home/Dustbin/getStreets';
+        $url = 'http://115.159.66.204/sanitation/?=home/Dustbin/getStreets';
 
         $post_data['stationList'] = '1,2';
 //        $post_data['plate'] = '72';
@@ -152,11 +152,11 @@ class TestController extends Controller{
     }
 
     public function getCarTrackSegments() {
-        $url = 'http://localhost/sanitation/index.php/home/Car/getCarTrackSegments';
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getDustbinInfo';
+//        $url = 'http://localhost/sanitation/index.php/home/Car/getCarTrackSegments';
+        $url = 'http://115.159.66.204/sanitation/?s=home/car/getCarTrackSegments';
 
-        $post_data['startTime'] = 1473082656;
-        $post_data['endTime'] = 1473092731;
+        $post_data['startTime'] = 1476028800;
+        $post_data['endTime'] = 1476374400;
 
 //        $post_data['endTime'] = 1473092706;
 //        $post_data['plate'] = '72';
@@ -446,7 +446,11 @@ class TestController extends Controller{
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);
 //        dump($obj);
-        echo date("Y-m-d H:i:s",time());     # 格式化时间戳
+//        echo date("Y-m-d H:i:s",time());     # 格式化时间戳
+
+        $ymd = date('Y-m-d');
+        $curDate = new Date($ymd);
+        dump($curDate);
     }
 
 

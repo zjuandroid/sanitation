@@ -178,6 +178,10 @@ class Date {
         return $tmpdate;
     }
 
+    public function getUnixTime() {
+        return $this->date;
+    }
+
     /**
      * 验证日期数据是否有效
      * @access public
