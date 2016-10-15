@@ -16,6 +16,8 @@ class DatabaseController
     //http://115.159.66.204/sanitation/?s=home/database/createDB
     //http://localhost/sanitation/?s=home/test/getCarTrackSegments
 
+    var $hisLength = 60;
+
     var $map = array(
         array(121.522011,31.243158, 121.542259,31.235007),
         array(121.489115,31.236524, 121.49914,31.23109),
@@ -35,11 +37,11 @@ class DatabaseController
     );
 
     var $carHisMap = array(
-        array(121.513064,31.245906, 121.509722,31.246492, 121.507243,31.244331),   //陆家嘴
-        array(121.515687,31.239113, 121.515543,31.24112, 121.519927,31.239607),
-        array(121.515328,31.242479, 121.515328,31.242479, 121.526251,31.246214),
-        array(121.513926,31.233216, 121.511627,31.236026, 121.510908,31.238064),
-        array(121.523017,31.232907, 121.524778,31.233617, 121.52891,31.234914),
+        array(121.523736,31.239422, 121.537066,31.244578, 121.542456,31.235007),   //陆家嘴
+        array(121.530707,31.247573, 121.530994,31.245103, 121.536456,31.233),
+        array(121.515112,31.247017, 121.521867,31.235655, 121.524311,31.228924),
+        array(121.524455,31.228862, 121.536671,31.232938, 121.542672,31.234945),
+        array(121.531102,31.235809, 121.536671,31.232938, 121.531892,31.24254),
 
         array(121.486088,31.235065, 121.487615,31.233104, 121.489232,31.230233),
         array(121.486788,31.235266, 121.486788,31.235266, 121.48889,31.232518),
@@ -93,6 +95,12 @@ class DatabaseController
                 $data['cur_velocity'] = sprintf("%.2f", $this->randomFloat(0, 80));
                 $data['cur_oil_amount'] = sprintf("%.2f", $this->randomFloat(10, 60));
                 $data['video_url'] = 'carMonitor.flv';
+                $data['fan_speed'] = rand(1000, 2300);
+                $data['tank_allowance'] = rand(10, 30);
+                $data['injector_state'] = '良好';
+                $data['sweep_state'] = '良好';
+                $data['fuel_quantity'] = rand(10, 20);
+                $data['need_maintain'] = '否';
                 $dao->add($data);
                 $k++;
             }
@@ -138,7 +146,7 @@ class DatabaseController
         $carNum = 15;
         $id = 1;
         for($num = 0; $num < $carNum; $num++) {
-            for($day = -180; $day < 0; $day++) {
+            for($day = -$this->hisLength; $day < 0; $day++) {
                 $date = $curDate->dateAdd($day, 'd');
 //                dump($date);
                 $startTime = $date->getUnixTime();
@@ -150,7 +158,7 @@ class DatabaseController
                 $pointQ = $pointNum/$pieces;
                 $tNum = 0;
                 for($p = 0; $p < $pieces; $p++) {
-                    for($i = 0; $i < $pointQ; $i++) {
+                    for($i = 0; $i <= $pointQ; $i++) {
                         $data=null;
                         $data['his_long'] = $this->getDotByIndex($this->carHisMap[$num][$p*2], $this->carHisMap[$num][$p*2+2], $pointQ, $i);
                         $data['his_lat'] = $this->getDotByIndex($this->carHisMap[$num][$p*2+1], $this->carHisMap[$num][$p*2+3], $pointQ, $i);
@@ -185,7 +193,7 @@ class DatabaseController
         $personNum = 15;
         $id = 1;
         for($num = 0; $num < $personNum; $num++) {
-            for($day = -180; $day < 0; $day++) {
+            for($day = -$this->hisLength; $day < 0; $day++) {
                 $date = $curDate->dateAdd($day, 'd');
 //                dump($date);
                 $startTime = $date->getUnixTime();
@@ -209,6 +217,104 @@ class DatabaseController
                         $dao->add($data);
                         $tNum++;
                     }
+                }
+            }
+        }
+
+        echo 'done';
+    }
+
+    public function createCollectPointHis() {
+        set_time_limit(0);
+
+        $dao = M('collect_point_his');
+        $ymd = date('Y-m-d');
+        $curDate = new Date($ymd);
+        $dao->where('1=1')->delete();
+        $deltaTime = 60*60;
+        $pointNum = 6;
+        $id = 1;
+        $lastFullNum = -1;
+        for($num = 0; $num < $pointNum; $num++) {
+            for($day = -$this->hisLength; $day < 0; $day++) {
+                $date = $curDate->dateAdd($day, 'd');
+//                dump($date);
+                $startTime = $date->getUnixTime();
+//                $startTime = Date.parse($date);
+//                dump($startTime);
+                $startWorkTime = $startTime + 8*60*60;
+                $endWorkTime = $startTime + 18*60*60;
+
+                for($i = $startTime; $i < $startTime+24*60*60; $i += $deltaTime) {
+                    if($i >= $startWorkTime && $i <= $endWorkTime) {
+                        $data['full_num'] = rand(0,10);
+                        $data['delta_weight'] = sprintf("%.2f", $this->randomFloat(0, 1000));
+                    }
+                    else {
+                        if($lastFullNum == -1) {
+                            $data['full_num'] = rand(0,10);
+                        }
+                        else {
+                            $data['full_num'] = $lastFullNum;
+                        }
+                        $data['delta_weight'] = 0;
+                    }
+                    $data['collect_point_id'] = $num+1;
+                    $data['id'] = $id++;
+                    $data['report_time'] = $i;
+                    $dao->add($data);
+                    $lastFullNum = $data['full_num'];
+                }
+            }
+        }
+
+        echo 'done';
+    }
+
+    public function createWasteStationHis()
+    {
+        set_time_limit(0);
+
+        $dao = M('waste_station_his');
+        $ymd = date('Y-m-d');
+        $curDate = new Date($ymd);
+        $dao->where('1=1')->delete();
+        $workTime = 8*60*60;
+        $deltaTime = 60*60;
+        $pointNum = $workTime/$deltaTime;
+        $pieces = 2;
+        $stationNum = 7;
+        $id = 1;
+        $lastWaterLevel = -1;
+        for($num = 0; $num < $stationNum; $num++) {
+            for($day = -$this->hisLength; $day < 0; $day++) {
+                $date = $curDate->dateAdd($day, 'd');
+//                dump($date);
+                $startTime = $date->getUnixTime();
+//                $startTime = Date.parse($date);
+//                dump($startTime);
+                $startWorkTime = $startTime + 8*60*60;
+                $endWorkTime = $startTime + 18*60*60;
+
+                for($i = $startTime; $i < $startTime+24*60*60; $i += $deltaTime) {
+                    if($i >= $startWorkTime && $i <= $endWorkTime) {
+                        $data['water_level'] = sprintf("%.2f", $this->randomFloat(0, 2));
+                        $data['delta_weight'] = sprintf("%.2f", $this->randomFloat(0, 1000));
+                    }
+                    else {
+                        if($lastWaterLevel == -1) {
+                            $data['water_level'] = sprintf("%.2f", $this->randomFloat(0, 2));
+                        }
+                        else {
+                            $data['water_level'] = $lastWaterLevel;
+                        }
+                        $data['delta_weight'] = 0;
+                    }
+                    $data['waste_station_id'] = $num+1;
+                    $data['id'] = $id++;
+                    $data['report_time'] = $i;
+                    $dao->add($data);
+                    $lastWaterLevel = $data['water_level'];
                 }
             }
         }

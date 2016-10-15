@@ -152,11 +152,11 @@ class TestController extends Controller{
     }
 
     public function getCarTrackSegments() {
-//        $url = 'http://localhost/sanitation/index.php/home/Car/getCarTrackSegments';
-        $url = 'http://115.159.66.204/sanitation/?s=home/car/getCarTrackSegments';
+        $url = 'http://localhost/sanitation/?s=home/Car/getCarTrackSegments';
+//        $url = 'http://115.159.66.204/sanitation/?s=home/car/getCarTrackSegments';
 
         $post_data['startTime'] = 1476028800;
-        $post_data['endTime'] = 1476374400;
+        $post_data['endTime'] = 1476460800;
 
 //        $post_data['endTime'] = 1473092706;
 //        $post_data['plate'] = '72';
@@ -284,7 +284,7 @@ class TestController extends Controller{
 
     public function getAlerts() {
 //        $url = 'http://localhost/sanitation/index.php/home/Alert/getAlerts';
-        $url = 'http://115.159.66.204/sanitation/index.php/home/Alert/getAlerts';
+        $url = 'http://115.159.66.204/sanitation/?s=home/Alert/getAlerts';
 
 
         $post_data['alertStatus'] = 'all';

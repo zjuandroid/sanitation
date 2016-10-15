@@ -1,8 +1,8 @@
-drop database if EXISTS sanitationDB;
+-- drop database if EXISTS sanitationDB;
 
-create database sanitationDB
-DEFAULT CHARACTER SET 'utf8'
-COLLATE 'utf8_general_ci';
+-- create database sanitationDB
+-- DEFAULT CHARACTER SET 'utf8'
+-- COLLATE 'utf8_general_ci';
 
 use sanitationDB;
 
@@ -27,7 +27,13 @@ cur_status VARCHAR (40),
 update_time int,
 cur_oil_consumption DOUBLE ,
 week_ave_oil_consumption DOUBLE,
-video_url VARCHAR (100)
+video_url VARCHAR (100),
+fan_speed DOUBLE ,
+tank_allowance DOUBLE ,
+injector_state VARCHAR (10),
+sweep_state VARCHAR (10),
+fuel_quantity DOUBLE ,
+need_maintain VARCHAR (10)
 )engine=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO san_car(plate,car_type, company_id, car_online, car_state, cur_long, cur_lat, cur_velocity, cur_oil_amount, cur_report_time, update_time, video_url)
@@ -87,16 +93,16 @@ VALUES
 ('易金凤', '人民路2号', '13184858888', '00004', 1, 1, 0, 121.650357,31.209006, 1466418002),
 ('曾越', '人民路1号', '13184859483', '00005', 1, 1, 0, 121.640357,31.209006, 1466418002);
 
-drop TABLE if EXISTS san_car_his;
-CREATE TABLE san_car_his(
-id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-car_id INT (11) NOT NULL,
-report_time int NOT NULL,
-his_long DOUBLE(10,6),
-his_lat DOUBLE(10,6),
-his_velocity DOUBLE,
-his_oil_amount DOUBLE
-)engine=InnoDB DEFAULT CHARSET = utf8;
+-- drop TABLE if EXISTS san_car_his;
+-- CREATE TABLE san_car_his(
+-- id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+-- car_id INT (11) NOT NULL,
+-- report_time int NOT NULL,
+-- his_long DOUBLE(10,6),
+-- his_lat DOUBLE(10,6),
+-- his_velocity DOUBLE,
+-- his_oil_amount DOUBLE
+-- )engine=InnoDB DEFAULT CHARSET = utf8;
 
 -- INSERT INTO san_car_his(car_id, report_time, his_long, his_lat, his_velocity, his_oil_amount)
 -- VALUES
@@ -121,15 +127,15 @@ his_oil_amount DOUBLE
 -- (3, 1473092726, 121.608868,31.194489,10, 30),
 -- (3, 1473092731, 121.608796,31.193778,10, 20);
 
-drop TABLE if EXISTS san_person_his;
-CREATE TABLE san_person_his(
-id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-person_id INT (11) NOT NULL,
-report_time int NOT NULL,
-his_long DOUBLE(10,6),
-his_lat DOUBLE(10,6),
-his_velocity DOUBLE
-)engine=InnoDB DEFAULT CHARSET = utf8;
+-- drop TABLE if EXISTS san_person_his;
+-- CREATE TABLE san_person_his(
+-- id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+-- person_id INT (11) NOT NULL,
+-- report_time int NOT NULL,
+-- his_long DOUBLE(10,6),
+-- his_lat DOUBLE(10,6),
+-- his_velocity DOUBLE
+-- )engine=InnoDB DEFAULT CHARSET = utf8;
 
 -- INSERT INTO san_person_his(person_id, report_time, his_long, his_lat, his_velocity)
 -- VALUES
@@ -193,37 +199,37 @@ VALUES
 ('00001', '三林垃圾中转站', 1, 1, '浦东新区杨高南路34号', 1, 0, 1466418002, 'carMonitor.flv'),
 ('00002', '徐汇垃圾中转站', 2, 5, '徐汇区桂林路111号', 0, 0, 1466418002, 'carMonitor.flv'),
 ('00003', '唐镇垃圾中转站', 3, 1, '浦东新区顾唐路33号', 1, 0, 1466418002, 'carMonitor.flv'),
-('00004', '普陀区垃圾中转站', 4, 2, '普陀区滨河路31号', 1, 0, 1466418002, 'carMonitor.flv'),
-('00005', '宝山区垃圾中转站', 5, 3, '宝山区宝钢路235号', 1, 0, 1466418002, 'carMonitor.flv'),
-('00006', '静安区垃圾中转站', 5, 4, '静安区宝钢路235号', 1, 0, 1466418002, 'carMonitor.flv');
+('00004', '普陀区垃圾中转站', 1, 2, '普陀区滨河路31号', 1, 0, 1466418002, 'carMonitor.flv'),
+('00005', '宝山区垃圾中转站', 1, 3, '宝山区宝钢路235号', 1, 0, 1466418002, 'carMonitor.flv'),
+('00006', '静安区垃圾中转站', 1, 4, '静安区宝钢路235号', 1, 0, 1466418002, 'carMonitor.flv');
 
-DROP TABLE if EXISTS san_waste_station_his;
-CREATE TABLE san_waste_station_his(
-id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-waste_station_id INT (11) NOT NULL,
-report_time int NOT NULL,
-water_level DOUBLE,
-delta_weight DOUBLE
-)engine=InnoDB DEFAULT CHARSET = utf8;
-
-INSERT INTO san_waste_station_his(waste_station_id, report_time, water_level, delta_weight)
-VALUES
-(1, 1473082656, 1.5, 1000),
-(1, 1473087656, 1.5, 500),
-(1, 1473092656, 1.5, 200),
-(1, 1473097656, 2 , 500),
-(1, 1473102656, 1.5, 500),
-(1, 1473107656, 1.5, 500),
-(2, 1473082656, 1.5, 500),
-(2, 1473087656, 1.5, 500),
-(2, 1473092656, 1.5, 500),
-(2, 1473097656, 1.5, 500),
-(2, 1473102656, 1.5, 500),
-(2, 1473107656, 1.5, 500),
-(3, 1473082656, 1.5, 500),
-(3, 1473087656, 1.5, 500),
-(3, 1473092656, 1.5, 500),
-(3, 1473097656, 1.5, 500);
+-- DROP TABLE if EXISTS san_waste_station_his;
+-- CREATE TABLE san_waste_station_his(
+-- id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+-- waste_station_id INT (11) NOT NULL,
+-- report_time int NOT NULL,
+-- water_level DOUBLE,
+-- delta_weight DOUBLE
+-- )engine=InnoDB DEFAULT CHARSET = utf8;
+--
+-- INSERT INTO san_waste_station_his(waste_station_id, report_time, water_level, delta_weight)
+-- VALUES
+-- (1, 1473082656, 1.5, 1000),
+-- (1, 1473087656, 1.5, 500),
+-- (1, 1473092656, 1.5, 200),
+-- (1, 1473097656, 2 , 500),
+-- (1, 1473102656, 1.5, 500),
+-- (1, 1473107656, 1.5, 500),
+-- (2, 1473082656, 1.5, 500),
+-- (2, 1473087656, 1.5, 500),
+-- (2, 1473092656, 1.5, 500),
+-- (2, 1473097656, 1.5, 500),
+-- (2, 1473102656, 1.5, 500),
+-- (2, 1473107656, 1.5, 500),
+-- (3, 1473082656, 1.5, 500),
+-- (3, 1473087656, 1.5, 500),
+-- (3, 1473092656, 1.5, 500),
+-- (3, 1473097656, 1.5, 500);
 
 DROP TABLE if EXISTS san_collect_point;
 CREATE TABLE san_collect_point(
@@ -248,28 +254,28 @@ VALUES
 ('00006', '6号回收点', '西安路33号', 0, 1, 1466418002, 2, 9),
 ('00007', '7号回收点', '银城路33号', 0, 1, 1466418002, 2, 10);
 
-DROP TABLE if EXISTS san_collect_point_his;
-CREATE TABLE san_collect_point_his(
-id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-collect_point_id VARCHAR (10) NOT NULL,
-full_num int,
-delta_weight DOUBLE ,
-report_time int
-)engine=InnoDB DEFAULT CHARSET = utf8;
-
-INSERT INTO san_collect_point_his(collect_point_id, full_num, report_time, delta_weight)
-VALUES
-(1, 2, 1466418002, 100),
-(1, 1, 1466419002, 200),
-(1, 0, 1466420002, 100),
-(1, 1, 1466431002, 100),
-(1, 2, 1466432002, 100),
-(1, 2, 1466433002, 100),
-(1, 2, 1466434002, 100),
-(2, 1, 1466418002, 100),
-(2, 0, 1466419002, 100),
-(2, 1, 1466420002, 100),
-(2, 1, 1466421002, 100);
+-- DROP TABLE if EXISTS san_collect_point_his;
+-- CREATE TABLE san_collect_point_his(
+-- id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+-- collect_point_id VARCHAR (10) NOT NULL,
+-- full_num int,
+-- delta_weight DOUBLE ,
+-- report_time int
+-- )engine=InnoDB DEFAULT CHARSET = utf8;
+--
+-- INSERT INTO san_collect_point_his(collect_point_id, full_num, report_time, delta_weight)
+-- VALUES
+-- (1, 2, 1466418002, 100),
+-- (1, 1, 1466419002, 200),
+-- (1, 0, 1466420002, 100),
+-- (1, 1, 1466431002, 100),
+-- (1, 2, 1466432002, 100),
+-- (1, 2, 1466433002, 100),
+-- (1, 2, 1466434002, 100),
+-- (2, 1, 1466418002, 100),
+-- (2, 0, 1466419002, 100),
+-- (2, 1, 1466420002, 100),
+-- (2, 1, 1466421002, 100);
 
 DROP TABLE if EXISTS san_dustbin;
 CREATE TABLE san_dustbin(
@@ -324,10 +330,10 @@ report_time int
 
 INSERT INTO san_alert(device_type, source_id, source_name, source_company_id, source_company_name, source_district_id, source_district_name, content_type, content_desc, status, report_time)
 VALUES
-(101, 1, 'A13871', 1, '清洁公司1', NULL , NULL , 101, '骤降7', 0, 1474953967),
-(201, 3, '张三', 2, '清洁公司2', NULL , NULL , 201, '环卫人员跌倒', 0, 1474964967),
-(301, 2, '徐汇垃圾中转站', 2, '清洁公司2', 5 , '徐汇区' , 301, '中转站已满', 0, 1474973967),
-(401, 1, '1号回收点', 1, '清洁公司1', 1 , '浦东区' , 401, '回收点已满', 0, 1474983967);
+(101, 1, '沪A13871', 1, '小红帽清洁公司', NULL , NULL , 101, '骤降10', 0, 1476057605),
+(201, 3, '何鹏', 2, '洁宜清洁公司', NULL , NULL , 201, '环卫人员跌倒', 0, 1476154800),
+(301, 2, '徐汇垃圾中转站', 2, '洁宜清洁公司', 5 , '徐汇区' , 301, '中转站已满', 0, 1476313200),
+(401, 1, '1号回收点', 1, '小红帽清洁公司', 1 , '浦东区' , 401, '回收点已满', 0, 1476497525);
 
 DROP TABLE if EXISTS san_manager;
 CREATE TABLE san_manager(
@@ -378,28 +384,28 @@ VALUES
 ('00002', '2号回收站', '盛夏路32号', 1, 0, 1466418002, 1, 6),
 ('00003', '3号回收站', 'XX路33号', 0, 1, 1466418002, 2, 9);
 
-DROP TABLE if EXISTS san_collect_station_his;
-CREATE TABLE san_collect_station_his(
-id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-collect_station_id VARCHAR (10) NOT NULL,
-full_num int,
-delta_weight DOUBLE ,
-report_time int
-)engine=InnoDB DEFAULT CHARSET = utf8;
-
-INSERT INTO san_collect_station_his(collect_station_id, full_num, report_time, delta_weight)
-VALUES
-(1, 2, 1466418002, 100),
-(1, 1, 1466419002, 200),
-(1, 0, 1466420002, 100),
-(1, 1, 1466431002, 100),
-(1, 2, 1466432002, 100),
-(1, 2, 1466433002, 100),
-(1, 2, 1466434002, 100),
-(2, 1, 1466418002, 100),
-(2, 0, 1466419002, 100),
-(2, 1, 1466420002, 100),
-(2, 1, 1466421002, 100);
+-- DROP TABLE if EXISTS san_collect_station_his;
+-- CREATE TABLE san_collect_station_his(
+-- id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+-- collect_station_id VARCHAR (10) NOT NULL,
+-- full_num int,
+-- delta_weight DOUBLE ,
+-- report_time int
+-- )engine=InnoDB DEFAULT CHARSET = utf8;
+--
+-- INSERT INTO san_collect_station_his(collect_station_id, full_num, report_time, delta_weight)
+-- VALUES
+-- (1, 2, 1466418002, 100),
+-- (1, 1, 1466419002, 200),
+-- (1, 0, 1466420002, 100),
+-- (1, 1, 1466431002, 100),
+-- (1, 2, 1466432002, 100),
+-- (1, 2, 1466433002, 100),
+-- (1, 2, 1466434002, 100),
+-- (2, 1, 1466418002, 100),
+-- (2, 0, 1466419002, 100),
+-- (2, 1, 1466420002, 100),
+-- (2, 1, 1466421002, 100);
 
 DROP TABLE if EXISTS san_evaluation_car;
 
