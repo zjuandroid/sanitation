@@ -381,8 +381,8 @@ update_time int
 INSERT INTO san_collect_station(collect_station_no, name, address, online, state, update_time, company_id, district_id)
 VALUES
 ('00001', '1号回收站', '盛夏路31号', 1, 0, 1466418002, 1, 6),
-('00002', '2号回收站', '盛夏路32号', 1, 0, 1466418002, 1, 6),
-('00003', '3号回收站', 'XX路33号', 0, 1, 1466418002, 2, 9);
+('00002', '2号回收站', '人民路32号', 1, 0, 1466418002, 1, 6),
+('00003', '3号回收站', '山西路33号', 0, 1, 1466418002, 2, 9);
 
 -- DROP TABLE if EXISTS san_collect_station_his;
 -- CREATE TABLE san_collect_station_his(

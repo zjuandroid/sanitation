@@ -49,7 +49,7 @@ class TestController extends Controller{
     }
 
     public function getCarInfo() {
-        $url = 'http://localhost/sanitation/index.php/home/company/getcarinfo';
+        $url = 'http://localhost/sanitation/?s=home/car/getcarinfo';
 //        $url = 'http://115.159.66.204/sanitation/index.php/home/company/getcarinfo';
 
         $post_data['companyId'] = '1';
@@ -349,8 +349,8 @@ class TestController extends Controller{
     }
 
     public function getPersonReport() {
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
-        $url = 'http://localhost/sanitation/index.php/home/report/getPersonReport';
+        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCarReport';
+//        $url = 'http://localhost/sanitation/index.php/home/report/getPersonReport';
 //        $post_data['startTime'] = 1473082656;
         $post_data['startTime'] = 1473092731;
         $post_data['endTime'] = 1473092731;
@@ -363,10 +363,10 @@ class TestController extends Controller{
     }
 
     public function getWasteStationReport() {
-        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getWasteStationReport';
-//        $url = 'http://localhost/sanitation/index.php/home/report/getWasteStationReport';
-        $post_data['startTime'] = 1473082656;
-        $post_data['endTime'] = 1473107656;
+        $url = 'http://115.159.66.204/sanitation/?s=home/report/getWasteStationReport';
+//        $url = 'http://localhost/sanitation/?s=home/report/getWasteStationReport';
+        $post_data['startTime'] = 1475251200;
+        $post_data['endTime'] = 1476460800;
 
         $post_data['xxx'] = 'all';
 //        $post_data['plate'] = '72';
@@ -389,10 +389,10 @@ class TestController extends Controller{
     }
 
     public function getCollectStationReport() {
-//        $url = 'http://115.159.66.204/sanitation/index.php/home/report/getCollectStationReport';
-        $url = 'http://localhost/sanitation/index.php/home/report/getCollectStationReport';
-        $post_data['startTime'] = 1466418002;
-        $post_data['endTime'] = 1466434002;
+        $url = 'http://115.159.66.204/sanitation/?s=/home/report/getCollectStationReport';
+//        $url = 'http://localhost/sanitation/index.php/home/report/getCollectStationReport';
+        $post_data['startTime'] = 1475251200;
+        $post_data['endTime'] = 1476460800;
 
         $post_data['xxx'] = 'all';
 //        $post_data['plate'] = '72';
@@ -448,9 +448,11 @@ class TestController extends Controller{
 //        dump($obj);
 //        echo date("Y-m-d H:i:s",time());     # 格式化时间戳
 
-        $ymd = date('Y-m-d');
-        $curDate = new Date($ymd);
-        dump($curDate);
+//        $ymd = date('Y-m-d');
+//        $curDate = new Date($ymd);
+//        dump($curDate);
+
+//        echo getAddress(121.495007, 31.183443);
     }
 
 

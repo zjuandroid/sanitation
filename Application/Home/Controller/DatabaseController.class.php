@@ -41,16 +41,16 @@ class DatabaseController
         array(121.530707,31.247573, 121.530994,31.245103, 121.536456,31.233),
         array(121.515112,31.247017, 121.521867,31.235655, 121.524311,31.228924),
         array(121.524455,31.228862, 121.536671,31.232938, 121.542672,31.234945),
-        array(121.531102,31.235809, 121.536671,31.232938, 121.531892,31.24254),
+        array(121.526576,31.246181, 121.529882,31.23871, 121.5352,31.226914),
 
         array(121.486088,31.235065, 121.487615,31.233104, 121.489232,31.230233),
         array(121.486788,31.235266, 121.486788,31.235266, 121.48889,31.232518),
-        array(121.487327,31.235605, 121.487579,31.234139, 121.489681,31.232579),
+        array(121.487327,31.235605, 121.488459,31.2341, 121.489681,31.232579),
         array(121.488172,31.23593, 121.489501,31.234092, 121.490471,31.232904),
         array(121.48995,31.236563, 121.490579,31.235497, 121.490579,31.235497),
 
         array(121.400407,31.2748, 121.408851,31.274924, 121.416756,31.274831),
-        array(121.391137,31.26588, 121.399078,31.265417, 121.409139,31.267732),
+        array(121.381543,31.263874, 121.399078,31.262762, 121.399797,31.274738),
         array(121.399725,31.271066, 121.4086,31.269399, 121.416146,31.268103),
         array(121.429225,31.270942, 121.428398,31.265818, 121.428183,31.261898),
         array(121.410181,31.267454, 121.411474,31.264059, 121.413774,31.256465)
@@ -90,7 +90,7 @@ class DatabaseController
                 $data['update_time'] = time();
                 $data['plate'] = '沪A'.(13871+$k);
                 $data['company_id'] = $i + 1;
-                $data['car_type'] = 100+($j%2);
+                $data['car_type'] = 101+($j%2);
                 $data['car_online'] = $data['car_state'] = $j%2;
                 $data['cur_velocity'] = sprintf("%.2f", $this->randomFloat(0, 80));
                 $data['cur_oil_amount'] = sprintf("%.2f", $this->randomFloat(10, 60));
@@ -123,9 +123,6 @@ class DatabaseController
                 $k++;
             }
         }
-
-
-
 
 
 
@@ -315,6 +312,47 @@ class DatabaseController
                     $data['report_time'] = $i;
                     $dao->add($data);
                     $lastWaterLevel = $data['water_level'];
+                }
+            }
+        }
+
+        echo 'done';
+    }
+
+    public function createCollectStationHis() {
+        set_time_limit(0);
+
+        $dao = M('collect_station_his');
+        $ymd = date('Y-m-d');
+        $curDate = new Date($ymd);
+        $dao->where('1=1')->delete();
+        $workTime = 8*60*60;
+        $deltaTime = 60*60;
+        $pointNum = $workTime/$deltaTime;
+        $pieces = 2;
+        $stationNum = 3;
+        $id = 1;
+        for($num = 0; $num < $stationNum; $num++) {
+            for($day = -$this->hisLength; $day < 0; $day++) {
+                $date = $curDate->dateAdd($day, 'd');
+//                dump($date);
+                $startTime = $date->getUnixTime();
+//                $startTime = Date.parse($date);
+//                dump($startTime);
+                $startWorkTime = $startTime + 8*60*60;
+                $endWorkTime = $startTime + 18*60*60;
+
+                for($i = $startTime; $i < $startTime+24*60*60; $i += $deltaTime) {
+                    if($i >= $startWorkTime && $i <= $endWorkTime) {
+                        $data['delta_weight'] = sprintf("%.2f", $this->randomFloat(0, 1000));
+                    }
+                    else {
+                        $data['delta_weight'] = 0;
+                    }
+                    $data['collect_station_id'] = $num+1;
+                    $data['id'] = $id++;
+                    $data['report_time'] = $i;
+                    $dao->add($data);
                 }
             }
         }

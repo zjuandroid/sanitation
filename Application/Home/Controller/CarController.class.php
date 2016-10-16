@@ -94,13 +94,22 @@ class CarController extends BaseController
         }
 
         $dao = M('car');
-        $data = $dao->where('t1.id in ('.$carList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.plate, t1.car_type, t1.car_online, t1.car_state, t1.cur_long, t1.cur_lat, t1.cur_velocity, t1.cur_oil_amount, t1.update_time, t1.company_id, t2.company_name, t1.video_url')->select();
+        $data = $dao->where('t1.id in ('.$carList.')')->alias('t1')->join('left join san_company t2 ON t1.company_id=t2.id')->field('t1.id, t1.plate, t1.car_type, t1.car_online, t1.car_state, t1.cur_long, t1.cur_lat, t1.cur_velocity, t1.cur_oil_amount, t1.update_time, t1.company_id,  t1.video_url, t1.fan_speed, t1.tank_allowance, t1.injector_state, t1.sweep_state, t1.fuel_quantity, t1.need_maintain, t2.company_name')->select();
+        $hisDao = M('car_his');
         $i = 0;
+        //add for demo
+        $startTime = strtotime('2016-10-10');
+        $endTime = strtotime('2016-10-11');
+        $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
         foreach($data as $car) {
             $car['location'] = getAddress($car['cur_long'], $car['cur_lat']);
 //            $car['video_url'] = 'http://115.159.66.204/uploads/video/carMonitor.flv';
             $car['video_url'] = C('VIDEO_ROOT').$car['video_url'];
             $car['car_state'] = $this->getCarStateDes(intval($car['car_state']));
+            //add for demo
+            $condition['car_id'] = $car['id'];
+            $car['preset_trail'] = $hisDao->where($condition)->field('his_long, his_lat')->select();
+
             $data[$i++] = $car;
 
         }

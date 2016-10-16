@@ -248,7 +248,7 @@ class ReportController extends BaseController
             $data[$i]['waste_station_name'] = $this->getWasteStationName($wasteStationTable, $item['waste_station_id']);
             $data[$i]['waste_station_address'] = $this->getWasteStationAddress($wasteStationTable, $item['waste_station_id']);
             $data[$i]['company_name'] = $this->getCompanyName($companyTable, $wasteStationTable, $item['waste_station_id']);
-            $data[$i]['sum_weitht'] = sprintf("%.2f", $item['sum_weitht']);
+            $data[$i]['sum_weight'] = sprintf("%.2f", $item['sum_weight']);
             $i++;
         }
 
@@ -426,6 +426,7 @@ class ReportController extends BaseController
             $data[$i]['collect_station_name'] = $this->getCollectPointName($collectStationTable, $item['collect_station_id']);
             $data[$i]['collect_station_address'] = $this->getCollectPointAddress($collectStationTable, $item['collect_station_id']);
             $data[$i]['company_name'] = $this->getCompanyName($companyTable, $collectStationTable, $item['collect_station_id']);
+            $data[$i]['sum_weight'] = sprintf("%.2f", $item['sum_weight']);
             $i++;
         }
 
