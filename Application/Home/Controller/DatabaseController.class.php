@@ -85,8 +85,11 @@ class DatabaseController
         for($i = 0; $i < 3; $i++) {
             for($j = 0; $j < 5; $j++) {
                 $data['id'] = $k;
-                $data['cur_long'] = $this->randomFloat($this->map[$i][0], $this->map[$i][2]);
-                $data['cur_lat'] = $this->randomFloat($this->map[$i][3], $this->map[$i][1]);
+//                $data['cur_long'] = $this->randomFloat($this->map[$i][0], $this->map[$i][2]);
+//                $data['cur_lat'] = $this->randomFloat($this->map[$i][3], $this->map[$i][1]);
+                $data['cur_long'] = $this->carHisMap[$k-1][0];
+                $data['cur_lat'] = $this->carHisMap[$k-1][1];
+
                 $data['update_time'] = time();
                 $data['plate'] = '沪A'.(13871+$k);
                 $data['company_id'] = $i + 1;
@@ -137,7 +140,7 @@ class DatabaseController
         $curDate = new Date($ymd);
         $dao->where('1=1')->delete();
         $workTime = 4*60*60;
-        $deltaTime = 10*60;
+        $deltaTime = 3*60;
         $pointNum = $workTime/$deltaTime;
         $pieces = 2;
         $carNum = 15;

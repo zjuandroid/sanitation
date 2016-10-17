@@ -125,7 +125,9 @@ class CarController extends BaseController
                 $des = '良好';
                 break;
             default:
-                $des = '未知';
+                //不用未知
+//                $des = '未知';
+                $des = '良好';
                 break;
         }
 
