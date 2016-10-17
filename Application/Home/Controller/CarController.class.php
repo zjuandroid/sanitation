@@ -102,13 +102,16 @@ class CarController extends BaseController
         $endTime = strtotime('2016-10-11');
         $condition['report_time'] = array(array('egt', $startTime), array('elt', $endTime));
         foreach($data as $car) {
+            //add for demo
+            $condition['car_id'] = $car['id'];
+            $car['preset_trail'] = $hisDao->where($condition)->field('his_long, his_lat')->select();
+            $car['cur_long'] = $car['preset_trail'][0]['his_long'];
+            $car['cur_lat'] = $car['preset_trail'][0]['his_lat'];
+
             $car['location'] = getAddress($car['cur_long'], $car['cur_lat']);
 //            $car['video_url'] = 'http://115.159.66.204/uploads/video/carMonitor.flv';
             $car['video_url'] = C('VIDEO_ROOT').$car['video_url'];
             $car['car_state'] = $this->getCarStateDes(intval($car['car_state']));
-            //add for demo
-            $condition['car_id'] = $car['id'];
-            $car['preset_trail'] = $hisDao->where($condition)->field('his_long, his_lat')->select();
 
             $data[$i++] = $car;
 
