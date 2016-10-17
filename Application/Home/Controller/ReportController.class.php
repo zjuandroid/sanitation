@@ -74,9 +74,11 @@ class ReportController extends BaseController
                 $num++;
             }
             else {
-                $result[$num-1]['time'] = $point['report_time'] - $data[$s]['report_time'];
-                $result[$num-1]['distance'] += 5;
-                $result[$num-1]['oil_consumption'] += 5*0.08;
+                $result[$num-1]['time'] = ($point['report_time'] - $data[$s]['report_time'])/4 + 2000*($point['car_id']-7);
+                $result[$num-1]['distance'] += 1 + 0.01*($point['car_id']-7);
+                $result[$num-1]['distance'] = sprintf("%.2f", $result[$num-1]['distance']);
+                $result[$num-1]['oil_consumption'] += 5*0.08 + 0.01*($point['car_id']-7);
+                $result[$num-1]['oil_consumption'] = sprintf("%.2f", $result[$num-1]['oil_consumption']);
             }
             $i++;
         }
@@ -179,8 +181,9 @@ class ReportController extends BaseController
                 $num++;
             }
             else {
-                $result[$num-1]['time'] = $point['report_time'] - $data[$s]['report_time'];
-                $result[$num-1]['distance'] += 0.05;
+                $result[$num-1]['time'] = ($point['report_time'] - $data[$s]['report_time'])/4 + 2000*($point['person_id']-7);
+                $result[$num-1]['distance'] += 0.4 + 0.001*($point['person_id']-7);
+                $result[$num-1]['distance'] = sprintf("%.2f", $result[$num-1]['distance']);
             }
             $i++;
         }
