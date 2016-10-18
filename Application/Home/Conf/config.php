@@ -35,4 +35,5 @@ return array(
             'name' => '垃圾箱'
         )
     ),
+    'SIM_DATA_PATH' => '/res/data/'
 );

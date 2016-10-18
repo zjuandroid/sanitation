@@ -1,0 +1,11 @@
+          new BMap.Point(121.459504,31.209755),
+          new BMap.Point(121.464463,31.211238),
+          new BMap.Point(121.468631,31.212658),
+          new BMap.Point(121.473374,31.214573),
+          new BMap.Point(121.478692,31.216611),
+          new BMap.Point(121.483004,31.218156),
+          new BMap.Point(121.485735,31.21902),
+          new BMap.Point(121.487747,31.2197),
+          new BMap.Point(121.487675,31.219638),
+          new BMap.Point(121.487675,31.219638),
+          new BMap.Point(121.487675,31.219638)

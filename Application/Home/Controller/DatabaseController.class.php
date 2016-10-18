@@ -17,6 +17,8 @@ class DatabaseController
     //http://localhost/sanitation/?s=home/test/getCarTrackSegments
 
     var $hisLength = 60;
+    var $localFileDir = 'C:\wamp\www\sanitation\res\data\\';
+    var $fileDir = '/yjdata/www/thinkphp/sanitation/res/data/';
 
     var $map = array(
         array(121.522011,31.243158, 121.542259,31.235007),
@@ -127,12 +129,108 @@ class DatabaseController
             }
         }
 
-
-
         echo 'done';
     }
 
     public function createCarHis() {
+        set_time_limit(0);
+
+        $dao = M('car_his');
+        $ymd = date('Y-m-d');
+        $curDate = new Date($ymd);
+        $dao->where('1=1')->delete();
+        $workTime = 4*60*60;
+        $deltaTime = 30;
+        $pointNum = $workTime/$deltaTime;
+
+//        $dir = __ROOT__.C('SIM_DATA_PATH');
+        $carNum = 15;
+        $id = 1;
+        for($num = 1; $num <= $carNum; $num++) {
+            $fileName = $this->fileDir.$num.'.txt';
+            if(!file_exists($fileName)) {
+                exit;
+            }
+            $list = $this->getPointList($fileName, $pointNum);
+            for($day = -$this->hisLength; $day < 0; $day++) {
+                $date = $curDate->dateAdd($day, 'd');
+                $startTime = $date->getUnixTime();
+                $startTime += 4 * 60 * 60 + rand(5 * 60, 15 * 60);
+
+                $tNum = 0;
+                $commit = array();
+                for($i = 0; $i < count($list); $i++) {
+                    $data['car_id'] = $num;
+                    $data['his_velocity'] = sprintf("%.2f", $this->randomFloat(0, 80));
+                    $data['his_oil_amount'] = sprintf("%.2f", $this->randomFloat(10, 50));
+                    $data['report_time'] = $startTime + $tNum*$deltaTime;
+                    $data['his_long'] = $list[$i]['his_long'];
+                    $data['his_lat'] = $list[$i]['his_lat'];
+                    $data['id'] = $id++;
+                    $commit[] = $data;
+                    $tNum++;
+                }
+                $dao->addAll($commit);
+                $commit = null;
+            }
+        }
+
+        echo 'done';
+    }
+
+    private function getPointList($fileName, $pointNum) {
+//        $fileName = 'C:\wamp\www\sanitation\res\data\1.txt';
+
+//        dump(file_exists('C:\wamp\www\sanitation\res\data\1.txt'));
+        $content = file_get_contents($fileName);
+//        dump($content);
+        $list = explode('),', $content);
+        $parseList = array();
+        foreach($list as $str) {
+            $pos1 = strpos($str, '(');
+            $pos2 = strpos($str, ',');
+            $point['his_long'] = substr($str, $pos1+1, $pos2-$pos1-1);
+            $point['his_lat'] = substr($str, $pos2+1, strlen($str)-$pos2);
+            $parseList[] = $point;
+        }
+
+        $lengthList = array();
+        $dotNumList = array();
+        $n = 0;
+        $sumLength = 0;
+        for($i = 1; $i < count($parseList); $i++) {
+            $x1 = $parseList[$i-1]['his_long'];
+            $y1 = $parseList[$i-1]['his_lat'];
+            $x2 = $parseList[$i]['his_long'];
+            $y2 = $parseList[$i]['his_lat'];
+
+            $length = sqrt(($x2-$x1)*($x2-$x1) + ($y2-$y1)*($y2-$y1));
+            $lengthList[] = $length;
+            $sumLength += $length;
+        }
+
+        $dotNumList = array();
+        foreach($lengthList as $length) {
+            $dotNumList[] = round($length/$sumLength*($pointNum-count($lengthList)-1));
+        }
+
+        $result = array();
+        for($i = 0; $i < count($dotNumList); $i++) {
+            $point = null;
+            $point['his_long'] = (float)$parseList[$i]['his_long'];
+            $point['his_lat'] = (float) $parseList[$i]['his_lat'];
+            $result[] = $point;
+            for($j = 0; $j < $dotNumList[$i]; $j++) {
+                $point['his_long'] = $this->getDotByIndex($parseList[$i]['his_long'], $parseList[$i+1]['his_long'], $dotNumList[$i], $j+1);
+                $point['his_lat'] = $this->getDotByIndex($parseList[$i]['his_lat'], $parseList[$i+1]['his_lat'], $dotNumList[$i], $j+1);
+                $result[] = $point;
+            }
+        }
+
+        return $result;
+    }
+
+    public function createCarHis1() {
         set_time_limit(0);
 
         $dao = M('car_his');
