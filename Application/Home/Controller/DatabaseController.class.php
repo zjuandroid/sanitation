@@ -96,13 +96,28 @@ class DatabaseController
                 $data['plate'] = '沪A'.(13871+$k);
                 $data['company_id'] = $i + 1;
                 $data['car_type'] = 101+($j%2);
-                $data['car_online'] = $data['car_state'] = $j%2;
+//                $data['car_online'] = $data['car_state'] = $j%2;
+                if($i == 0 && $j == 2) {
+                    $data['car_online'] = 0;
+                    $data['car_state'] = 0;
+                    $data['injector_state'] = '良好';
+                }
+                else if($i == 0 && $j == 1) {
+                    $data['car_online'] = 1;
+                    $data['car_state'] = 1;
+                    $data['injector_state'] = '异常';
+                }
+                else {
+                    $data['car_online'] = 1;
+                    $data['car_state'] = 0;
+                    $data['injector_state'] = '良好';
+                }
                 $data['cur_velocity'] = sprintf("%.2f", $this->randomFloat(0, 80));
                 $data['cur_oil_amount'] = sprintf("%.2f", $this->randomFloat(10, 60));
                 $data['video_url'] = 'carMonitor.flv';
                 $data['fan_speed'] = rand(1000, 2300);
                 $data['tank_allowance'] = rand(10, 30);
-                $data['injector_state'] = '良好';
+//                $data['injector_state'] = '良好';
                 $data['sweep_state'] = '良好';
                 $data['fuel_quantity'] = rand(10, 20);
                 $data['need_maintain'] = '否';
