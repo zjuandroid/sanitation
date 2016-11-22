@@ -442,6 +442,35 @@ class TestController extends Controller{
         print_r($res);
     }
 
+
+    public function login(){
+        $url = 'http://localhost/sanitation/index.php/home/login/login';
+//        $post_data['appid']       = '10';
+//        $post_data['appkey']      = 'cmbohpffXVR03nIpkkQXaAA1Vf5nO4nQ';
+//        $post_data['username'] = 'chwang';
+//        $post_data['password']    = '123456';
+
+        $post_data['username'] = '18121380371';
+        $post_data['password']    = '96e79218965eb72c92a549dd5a330112';
+//        $post_data['email']    = 'zsjs123@126.com';
+
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
+    public function postCarData() {
+        $url = 'http://localhost/sanitation/index.php/home/client/postCarData';
+
+        $post_data['token'] = 'tiymi8cgc6dq3uqc4qvap1qfmnje8vzw';
+        $post_data['userid']    = '2';
+
+        $post_data['data'] = '1';
+
+        $res = request_post($url, $post_data);
+        print_r($res);
+    }
+
     function test() {
 //        $a = '[1,2,4]';
 //        $obj = json_decode($a);
