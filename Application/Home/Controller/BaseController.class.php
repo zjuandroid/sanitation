@@ -16,7 +16,7 @@ class BaseController extends Controller {
         $userid = I('post.userid');
         $token = I('post.token');
 
-        echo('userid='.$userid.'  token='.$token.' ');
+//        echo('userid='.$userid.'  token='.$token.' ');
 
         if(!$userid || !$token) {
             exit(wrapResult('CM0003'));
