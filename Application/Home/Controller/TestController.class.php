@@ -4,6 +4,7 @@ namespace Home\Controller;
 
 use Think\Controller;
 use Org\Util\Date;
+use Org\Util\GPS;
 
 class TestController extends Controller{
 
@@ -469,6 +470,23 @@ class TestController extends Controller{
 
         $res = request_post($url, $post_data);
         print_r($res);
+    }
+
+    public function transGPS() {
+        //原始：121.575386,31.241986
+        //百度API转换：121.58607937359,31.245996974352
+
+        $long = 121.575386;
+        $lat = 31.241986;
+        $gps = new GPS();
+
+//        dump($gps->gcj_encrypt($lat, $long));
+
+        $res = $gps->gcj_encrypt($lat, $long);
+
+        dump($gps->bd_encrypt($res['lat'], $res['lon']));
+
+        //自己转换： 121.58607402766, 31.245992982911
     }
 
     function test() {

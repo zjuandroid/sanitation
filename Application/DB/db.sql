@@ -1,6 +1,6 @@
-drop database if EXISTS sanitationDB;
+drop database if EXISTS sanitationDB_dev;
 
-create database sanitationDB
+create database sanitationDB_dev
 DEFAULT CHARACTER SET 'utf8'
 COLLATE 'utf8_general_ci';
 
