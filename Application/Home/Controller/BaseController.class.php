@@ -13,23 +13,23 @@ class BaseController extends Controller {
             exit(wrapResult('CM0001'));
         }
 
-        $userid = I('post.userid');
-        $token = I('post.token');
-
-//        echo('userid='.$userid.'  token='.$token.' ');
-
-        if(!$userid || !$token) {
-            exit(wrapResult('CM0003'));
-        }
-
-        if($token != S($userid)) {
-            exit(wrapResult('LG0001'));
-        }
-
-        $status = M('member')->where('id='.$userid)->getField('status');
-        if($status == 0) {
-            exit (wrapResult('LG0005'));
-        }
+//        $userid = I('post.userid');
+//        $token = I('post.token');
+//
+////        echo('userid='.$userid.'  token='.$token.' ');
+//
+//        if(!$userid || !$token) {
+//            exit(wrapResult('CM0003'));
+//        }
+//
+//        if($token != S($userid)) {
+//            exit(wrapResult('LG0001'));
+//        }
+//
+//        $status = M('member')->where('id='.$userid)->getField('status');
+//        if($status == 0) {
+//            exit (wrapResult('LG0005'));
+//        }
     }
 
 }

@@ -2,7 +2,7 @@
 return array(
 'DB_TYPE'               =>  'mysql',     // 数据库类型
 'DB_HOST'               =>  'localhost', // 服务器地址
-'DB_NAME'               =>  'sanitationDB_dev',          // 数据库名
+'DB_NAME'               =>  'sanitationDB',          // 数据库名
 'DB_USER'               =>  'root',      // 用户名
 'DB_PWD'                =>  'root1234',          // 密码
 'DB_PORT'               =>  '3306',        // 端口
