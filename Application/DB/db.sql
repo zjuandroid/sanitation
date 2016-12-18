@@ -4,7 +4,7 @@ create database sanitationDB_dev
 DEFAULT CHARACTER SET 'utf8'
 COLLATE 'utf8_general_ci';
 
-use sanitationDB;
+use sanitationDB_dev;
 
 drop TABLE if EXISTS san_car;
 
